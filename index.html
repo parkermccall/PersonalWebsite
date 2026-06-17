@@ -3,416 +3,296 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>:: PARKER McCALL :: AEROSPACE ::</title>
+<title>Parker McCall — Aerospace · Propulsion · Maker</title>
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#020a04; --green:#7dff3c; --green-br:#b6ff7a; --green-d:#2f8a1c; --green-dd:#0c2e08;
-  --core:#dfffb0; --text:#cdefb8; --dim:#6fa85a;
-  --tech:'Share Tech Mono',monospace; --display:'Orbitron',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--tech);line-height:1.5;overflow-x:hidden;position:relative}
+:root{--bg:#0a0c10;--panel:#0f1318;--line:#1d242d;--line2:#2a333d;--text:#e6edf3;--dim:#8b97a3;--faint:#5a6573;--accent:#ff5c2b;--accent2:#3ddc97;--grid:rgba(255,255,255,.025);--mono:'Space Mono',monospace;--sans:'Sora',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:1240px;margin:0 auto;padding:0 26px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
 
-/* ===== BOOT ===== */
-#boot{position:fixed;inset:0;z-index:1000;background:#010602;cursor:pointer;
-  transition:opacity 1.1s ease,visibility 1.1s}
-#boot.done{opacity:0;visibility:hidden;pointer-events:none}
-#bootgl{position:absolute;inset:0;width:100%;height:100%;display:block}
-.boot-name{position:absolute;left:0;right:0;top:18%;text-align:center;pointer-events:none;z-index:3;
-  font-family:var(--display);font-weight:900;font-size:clamp(26px,5vw,52px);letter-spacing:10px;color:#eaffd6;
-  opacity:0;animation:fin 1.6s ease 3.6s forwards;text-shadow:0 0 22px var(--green),0 0 50px var(--green-d)}
-.boot-tag{position:absolute;left:0;right:0;bottom:20%;text-align:center;pointer-events:none;z-index:3;
-  font-family:var(--display);font-weight:500;font-size:clamp(11px,1.6vw,15px);letter-spacing:7px;color:var(--green-br);
-  opacity:0;animation:fin 1.6s ease 4.4s forwards;text-shadow:0 0 14px var(--green-d)}
-@keyframes fin{to{opacity:1}}
-.skip{position:absolute;top:22px;right:26px;font-family:var(--display);font-size:10px;letter-spacing:3px;
-  color:var(--dim);opacity:0;animation:fin 1s ease 1.5s forwards}
+/* ===== INTRO — name reveal: light sweeps across the wordmark ===== */
+#intro{position:fixed;inset:0;z-index:1000;background:#06070a;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .7s ease,visibility .7s ease;overflow:hidden}
+#intro.done{opacity:0;visibility:hidden;pointer-events:none}
+/* same grid surface as the site, plus a soft vignette so the centre reads bright */
+#intro .intro-grid{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:48px 48px;
+  -webkit-mask-image:radial-gradient(circle at 50% 45%,#000 0%,rgba(0,0,0,.5) 55%,transparent 85%);
+          mask-image:radial-gradient(circle at 50% 45%,#000 0%,rgba(0,0,0,.5) 55%,transparent 85%)}
+/* opens on a pure black screen, then fades to reveal the grid */
+#intro::before{content:'';position:absolute;inset:0;background:#000;z-index:5;pointer-events:none;
+  animation:introWash .8s ease .15s forwards}
+@keyframes introWash{to{opacity:0}}
 
-/* ===== DASH ===== */
-#dash{opacity:0;transition:opacity 1.1s ease .25s}
-#dash.show{opacity:1}
-#ambient{position:fixed;inset:0;z-index:-2;width:100%;height:100%;opacity:.85}
-#orbgl{position:fixed;inset:0;z-index:-1;width:100%;height:100%;display:block}
-.orb-cap{position:fixed;left:40px;bottom:22px;font-family:var(--display);font-size:11px;
-  letter-spacing:5px;color:var(--green);text-shadow:0 0 10px var(--green-d);white-space:nowrap;z-index:1;
-  opacity:0;transition:opacity 1s ease 1.2s}
-#dash.show .orb-cap{opacity:.8}
+.intro-in{position:relative;z-index:4;width:100%;max-width:980px;padding:0 32px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:22px}
+.intro-tag{font-family:var(--mono);font-size:clamp(10px,2.6vw,12px);color:var(--accent2);letter-spacing:3px;
+  display:inline-flex;align-items:center;gap:10px;opacity:0;animation:fadeIn .5s ease 1.35s forwards}
+.intro-tag::before,.intro-tag::after{content:'';width:24px;height:1px;background:var(--accent2);opacity:.7}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:30;
-  border-bottom:1px solid var(--green-dd);background:linear-gradient(180deg,rgba(12,46,8,.55),transparent);backdrop-filter:blur(5px)}
-.brand{font-family:var(--display);font-weight:900;font-size:17px;letter-spacing:2px;color:var(--green-br);text-shadow:0 0 10px var(--green-d)}
-.brand .s{color:#fff}
-.clock{font-family:var(--display);font-size:12px;letter-spacing:3px;color:var(--dim)}
+/* the wordmark: mono, technical, one line. base letters sit dim; a bright band sweeps across. */
+.wordmark{position:relative;font-family:var(--mono);font-weight:700;letter-spacing:.04em;
+  font-size:clamp(26px,7.2vw,76px);line-height:1;white-space:nowrap;color:#2c333d;
+  text-transform:uppercase}
+.wordmark .lo{font-weight:400;text-transform:none}
+/* the lit copy, stacked exactly on top, masked to a moving vertical band of light */
+.wordmark .lit{position:absolute;inset:0;color:#fff;text-align:center;
+  text-shadow:0 0 14px rgba(255,255,255,.55),0 0 34px rgba(255,255,255,.25);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 12%,transparent 20%);
+          mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 12%,transparent 20%);
+  -webkit-mask-size:500% 100%;mask-size:500% 100%;
+  -webkit-mask-position:-60% 0;mask-position:-60% 0;
+  animation:sweep 1.5s cubic-bezier(.45,.05,.3,1) .35s forwards}
+@keyframes sweep{to{-webkit-mask-position:160% 0;mask-position:160% 0}}
+/* after the sweep, settle the whole wordmark to a clean solid white */
+.wordmark .settle{position:absolute;inset:0;color:#eef2f6;text-align:center;opacity:0;
+  animation:settleIn .5s ease 1.7s forwards}
+@keyframes settleIn{to{opacity:1}}
 
-.stage{display:flex;justify-content:flex-end;align-items:flex-start;min-height:80vh;padding:40px 0 18px;position:relative}
+.skip{position:absolute;bottom:26px;left:0;right:0;z-index:6;text-align:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--faint);
+  opacity:0;animation:fadeIn .6s ease 1.1s forwards;text-transform:uppercase}
+.skip:hover{color:var(--accent)}
 
-.blades{display:flex;flex-direction:column;gap:15px;position:relative;z-index:2;width:min(560px,52%)}
-.welcome{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:5px;color:var(--green-br);
-  margin-bottom:6px;text-shadow:0 0 10px var(--green-d)}
-.blade{display:flex;align-items:center;gap:16px;cursor:pointer;color:var(--text);
-  transition:transform .22s cubic-bezier(.2,.8,.2,1);
-  opacity:0;transform:translateX(26px)}
-/* concave arc: outer blades pushed right, middle blades pulled left toward the system */
-.blade:nth-child(2){margin-left:46px}
-.blade:nth-child(3){margin-left:14px}
-.blade:nth-child(4){margin-left:14px}
-.blade:nth-child(5){margin-left:46px}
-#dash.show .blade{animation:bladein .5s cubic-bezier(.2,.8,.2,1) forwards}
-#dash.show .blade:nth-child(2){animation-delay:.15s}
-#dash.show .blade:nth-child(3){animation-delay:.28s}
-#dash.show .blade:nth-child(4){animation-delay:.41s}
-#dash.show .blade:nth-child(5){animation-delay:.54s}
-@keyframes bladein{to{opacity:1;transform:none}}
-.blade .ring{width:52px;height:52px;flex:none;border-radius:50%;position:relative;transition:.22s;
-  background:radial-gradient(circle at 34% 30%,rgba(214,255,170,.95),rgba(47,138,28,.3) 58%,transparent 72%);
-  border:1px solid rgba(125,255,60,.55);box-shadow:0 0 16px rgba(125,255,60,.4),inset 0 0 12px rgba(125,255,60,.5)}
-.blade .ring::after{content:'';position:absolute;inset:32%;border-radius:50%;
-  background:radial-gradient(circle,rgba(223,255,176,.95),transparent 70%)}
-.blade .bar{flex:1;height:52px;display:flex;align-items:center;padding-left:24px;transition:.22s cubic-bezier(.2,.8,.2,1);
-  font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:3px;color:var(--green-br);transform-origin:left center;
-  background:linear-gradient(90deg,rgba(47,138,28,.55),rgba(12,46,8,.18) 70%,transparent);
-  clip-path:polygon(0 0,100% 0,calc(100% - 20px) 100%,0 100%);
-  border-left:2px solid var(--green);text-shadow:0 0 8px var(--green-d)}
-.blade .bar .sub{font-family:var(--tech);font-weight:400;font-size:11px;letter-spacing:1px;color:var(--dim);margin-left:auto;padding-right:30px;transition:.22s}
-.blade:hover{transform:translateX(12px)}
-.blade:hover .bar{height:62px;font-size:19px;background:linear-gradient(90deg,rgba(125,255,60,.65),rgba(47,138,28,.25) 70%,transparent);color:#f1ffe8;box-shadow:-6px 0 26px rgba(125,255,60,.4),inset 0 0 18px rgba(125,255,60,.15)}
-.blade:hover .bar .sub{color:var(--green-br)}
-.blade:hover .ring{width:60px;height:60px;box-shadow:0 0 30px var(--green),inset 0 0 16px rgba(223,255,176,.8)}
+/* ===== SITE ===== */
+#site{opacity:0;transition:opacity 1.1s ease}
+#site.show{opacity:1}
 
-.statline{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
-.pill{font-family:var(--display);font-size:11px;letter-spacing:2px;color:var(--green);border:1px solid var(--green-dd);background:rgba(125,255,60,.04);padding:7px 13px}
-.pill b{color:#fff;font-weight:900}
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,12,16,.78);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:var(--mono);font-weight:700;letter-spacing:1px;font-size:15px}.logo b{color:var(--accent)}
+.nav-links{display:flex;gap:34px;font-family:var(--mono);font-size:13px}
+.nav-links a{color:var(--dim);transition:color .2s;position:relative}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a.active::after{content:'';position:absolute;bottom:-6px;left:0;width:100%;height:2px;background:var(--accent)}
+.burger{display:none;font-family:var(--mono);color:var(--dim);background:none;border:1px solid var(--line2);padding:6px 12px;border-radius:6px;cursor:pointer}
 
-.below{padding:30px 0 70px}
-.sec-h{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:3px;color:var(--green-br);margin-bottom:18px;text-shadow:0 0 8px var(--green-d)}
-.sec-h::before{content:'> ';color:#fff}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.card{background:linear-gradient(160deg,rgba(18,52,12,.5),rgba(2,10,4,.4));border:1px solid var(--green-dd);
-  border-left:2px solid var(--green-d);padding:20px;transition:.18s;backdrop-filter:blur(3px)}
-.card:hover{border-left-color:var(--green);box-shadow:0 0 18px rgba(125,255,60,.18);transform:translateY(-3px)}
-.card .id{font-family:var(--display);font-size:10px;letter-spacing:2px;color:var(--green)}
-.card h3{font-family:var(--display);font-weight:700;font-size:16px;color:var(--green-br);margin:8px 0 9px;letter-spacing:1px}
-.card p{font-size:13.5px;color:var(--text)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
-.chip{font-family:var(--display);font-size:10px;letter-spacing:1px;color:var(--green);border:1px solid var(--green-dd);padding:3px 8px}
+/* hero */
+.hero{padding-block:96px 70px}
+.tag{font-family:var(--mono);font-size:12px;color:var(--accent2);letter-spacing:2px;margin-bottom:24px;display:inline-flex;align-items:center;gap:10px}
+.tag::before{content:'';width:28px;height:1px;background:var(--accent2)}
+.hero h1{font-size:clamp(40px,7vw,82px);font-weight:800;letter-spacing:-2px;line-height:1.02;max-width:14ch}
+.hero h1 .warm{color:var(--accent)}
+.hero .lede{color:var(--dim);font-weight:300;font-size:18px;max-width:560px;margin-top:24px}
+.cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+.btn{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:1px;padding:14px 24px;border-radius:10px;border:1px solid var(--line2);color:var(--text);text-transform:uppercase;transition:.2s;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:var(--accent);color:#fff}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#10100c}
+.btn.primary:hover{background:#ff7148;border-color:#ff7148}
 
-footer{border-top:1px solid var(--green-dd);padding:26px 0;margin-top:10px}
-.foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--display);font-size:11px;letter-spacing:2px;color:var(--dim);flex-wrap:wrap;gap:12px}
-.foot-in a:hover{color:var(--green)}
+/* stat band */
+.stats{margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
+.stat{padding:30px 32px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat .num{font-family:var(--mono);font-weight:700;font-size:36px;color:var(--accent);letter-spacing:1px;line-height:1}
+.stat .lbl{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--faint);margin-top:14px;text-transform:uppercase}
 
-@media(max-width:860px){
-  .stage{grid-template-columns:1fr;gap:6px;min-height:auto}
-  .orb-wrap{height:52vh;min-height:340px;order:-1}
-  .grid{grid-template-columns:1fr}
+/* featured work — same panel language as the projects page */
+.section{padding-block:30px 20px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:10px}
+.sec-title{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--accent2);text-transform:uppercase;display:inline-flex;align-items:center;gap:10px}
+.sec-title::before{content:'';width:28px;height:1px;background:var(--accent2)}
+.sec-link{font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--faint)}
+.sec-link:hover{color:var(--accent)}
+
+.proj{border:1px solid var(--line);border-radius:16px;background:var(--panel);margin-bottom:24px;overflow:hidden;transition:.25s}
+.proj:hover{border-color:var(--line2)}
+.proj-top{display:grid;grid-template-columns:120px 1fr;gap:0}
+.proj-num{background:linear-gradient(160deg,#12171d,#0c1014);border-right:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:40px;font-weight:700;color:var(--accent);padding:30px 0}
+.proj-body{padding:34px 36px}
+.proj-meta{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:2px;text-transform:uppercase}
+.proj-body h2{font-size:24px;font-weight:600;margin:10px 0 12px}
+.proj-body p{color:var(--dim);font-weight:300;margin-bottom:8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.chip{font-family:var(--mono);font-size:11px;color:var(--accent2);border:1px solid var(--line2);padding:4px 10px;border-radius:20px}
+
+footer{border-top:1px solid var(--line);padding:50px 0;margin-top:40px}
+.foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:13px;color:var(--faint);flex-wrap:wrap;gap:16px}
+.foot-in a:hover{color:var(--accent)}
+
+.reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
+
+@keyframes fadeIn{to{opacity:1}}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .wrap{padding:0 28px}
+  .hero h1{font-size:clamp(38px,7vw,72px)}
+}
+@media(max-width:780px){
+  .wrap{padding:0 22px}
+  .nav-links{display:none}.burger{display:block}
+  .nav-links.open{display:flex;position:absolute;top:68px;left:0;right:0;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 22px;gap:18px}
+  .hero{padding-block:56px 46px}
+  .hero h1{font-size:clamp(34px,9vw,58px);letter-spacing:-1px;max-width:100%}
+  .hero .lede{font-size:16px;margin-top:20px}
+  .cta{margin-top:30px;gap:12px}
+  .btn{flex:1 1 auto;justify-content:center;padding:14px 18px}
+  .stats{margin-top:48px;grid-template-columns:repeat(2,1fr)}
+  .stat{padding:24px 22px}
+  .stat .num{font-size:30px}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}
+  .sec-head{margin-bottom:22px}
+  .proj{margin-bottom:18px}
+  .proj-top{grid-template-columns:1fr}
+  .proj-num{border-right:none;border-bottom:1px solid var(--line);padding:14px 0;font-size:26px;justify-content:flex-start;padding-left:24px}
+  .proj-body{padding:24px 22px}
+  .proj-body h2{font-size:21px}
+  footer{padding:36px 0;margin-top:28px}
+  .foot-in{flex-direction:column;align-items:flex-start;gap:12px}
+  /* the script needs to be readable on a phone — let it fill more width */
+  #intro svg{margin:14px 0 12px}
+  .intro-in{padding:0 22px}
+  .scan{animation-duration:1.3s}
+}
+@media(max-width:480px){
+  .hero h1{font-size:clamp(30px,11vw,46px)}
+  .btn{flex:1 1 100%}
+  .stats{grid-template-columns:1fr}
+  .stat{border-right:none;border-bottom:1px solid var(--line);padding:20px 22px;display:flex;align-items:baseline;justify-content:space-between}
+  .stat:last-child{border-bottom:none}
+  .stat .lbl{margin-top:0}
+  .proj-body p{font-size:14px}
 }
 @media(prefers-reduced-motion:reduce){
-  #boot{transition:none}
-  .blade{opacity:1;transform:none;animation:none!important}
-  .boot-foot .ttl,.boot-foot .sub,.skip{animation:none;opacity:1}
+  .wordmark .lit{display:none}
+  .wordmark .settle{opacity:1;animation:none}
+  .intro-tag,.skip{animation:none;opacity:1}
+  .reveal{opacity:1;transform:none;transition:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ===== BOOT ===== -->
-<div id="boot" onclick="endBoot()">
-  <canvas id="bootgl"></canvas>
-  <div class="boot-name">PARKER McCALL</div>
-  <div class="boot-tag">AEROSPACE · PROPULSION SYSTEMS</div>
-  <div class="skip">CLICK ANYWHERE TO SKIP ▸</div>
-</div>
-
-<!-- ===== DASH ===== -->
-<div id="dash">
-  <canvas id="ambient"></canvas>
-
-  <div class="wrap topbar">
-    <div class="brand">PARKER<span class="s">//</span>McCALL</div>
-    <div class="clock" id="clock">--:--</div>
-  </div>
-
-  <canvas id="orbgl"></canvas>
-  <div class="orb-cap">◦ SOL SYSTEM · ONLINE ◦</div>
-
-  <div class="wrap stage">
-    <div class="blades">
-      <div class="welcome">SELECT A DESTINATION</div>
-      <a class="blade" href="/"><div class="ring"></div><div class="bar">HOME<span class="sub">/ index</span></div></a>
-      <a class="blade" href="/projects"><div class="ring"></div><div class="bar">PROJECTS<span class="sub">/ work log</span></div></a>
-      <a class="blade" href="/about"><div class="ring"></div><div class="bar">ABOUT<span class="sub">/ profile</span></div></a>
-      <a class="blade" href="/contact"><div class="ring"></div><div class="bar">CONTACT<span class="sub">/ hail</span></div></a>
-      <div class="statline">
-        <span class="pill">STAND <b>316SS</b></span>
-        <span class="pill">DAQ <b>4-20mA</b></span>
-        <span class="pill">CAD <b>6FT</b></span>
-        <span class="pill">NC STATE <b>MAE</b></span>
-      </div>
+<!-- ===== INTRO ===== -->
+<div id="intro" onclick="endIntro()">
+  <div class="intro-grid"></div>
+  <div class="intro-in">
+    <div class="intro-tag">AEROSPACE · PROPULSION · MAKER</div>
+    <div class="wordmark" aria-label="Parker McCall">
+      <span class="base">PARKER <span class="lo">Mc</span>CALL</span>
+      <span class="lit" aria-hidden="true">PARKER <span class="lo">Mc</span>CALL</span>
+      <span class="settle" aria-hidden="true">PARKER <span class="lo">Mc</span>CALL</span>
     </div>
   </div>
-
-  <div class="wrap below">
-    <div class="sec-h">FEATURED WORK</div>
-    <div class="grid">
-      <div class="card"><div class="id">PRJ_01 · PROPULSION</div><h3>HTP / JET-A TEST STAND</h3>
-        <p>Bipropellant rocket engine test stand with full instrumentation — load cells, pressure transducers, thermocouples — and a floating engine mount for accurate thrust measurement.</p>
-        <div class="chips"><span class="chip">SolidWorks</span><span class="chip">316 SS</span><span class="chip">Swagelok</span><span class="chip">DAQ</span></div></div>
-      <div class="card"><div class="id">PRJ_02 · AERO</div><h3>LONG-RANGE RECON UAV</h3>
-        <p>Fixed-wing reconnaissance aircraft with optimized battery architecture (LiPo vs Li-Ion trade study) and a tuned charging workflow built around the Aorika L6X2.</p>
-        <div class="chips"><span class="chip">Fixed-wing</span><span class="chip">Li-Ion</span><span class="chip">RC</span></div></div>
-      <div class="card"><div class="id">PRJ_03 · DAQ</div><h3>PANCAKE LOAD CELL CHAIN</h3>
-        <p>V-to-I converter feeding a 4-20 mA current loop into a data acquisition system for clean, noise-immune thrust readings over long cable runs.</p>
-        <div class="chips"><span class="chip">Analog</span><span class="chip">4-20 mA</span><span class="chip">Sensors</span></div></div>
-      <div class="card"><div class="id">PRJ_04 · SOFTWARE</div><h3>LEXADEX</h3>
-        <p>A roguelike language-learning game built in React / Expo. Turning vocabulary acquisition into a run-based progression loop.</p>
-        <div class="chips"><span class="chip">React</span><span class="chip">Expo</span><span class="chip">Game Design</span></div></div>
-    </div>
-  </div>
-
-  <footer><div class="wrap foot-in">
-    <span>© 2026 PARKER · NC STATE MAE</span>
-    <span><a href="/contact">CONTACT</a> · <a href="/projects">WORK</a></span>
-  </div></footer>
+  <div class="skip">click to skip</div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- ===== SITE ===== -->
+<div id="site">
+
+<nav><div class="wrap nav-in">
+  <a href="/" class="logo">ParkerMcCall<b>.</b>com</a>
+  <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')">MENU</button>
+  <div class="nav-links" id="nl">
+    <a href="/" class="active">/home</a><a href="/projects">/projects</a>
+    <a href="/about">/about</a><a href="/contact">/contact</a>
+  </div>
+</div></nav>
+
+<header class="hero wrap">
+  <div class="tag reveal">AEROSPACE · PROPULSION · MAKER</div>
+  <h1 class="reveal">Building things that <span class="warm">fly, thrust,</span> and hold.</h1>
+  <p class="lede reveal">Aerospace engineering student at NC State. I design propulsion test hardware, fly fixed-wing RC, and build in CAD, code, and steel.</p>
+  <div class="cta reveal">
+    <a href="/projects" class="btn primary">View Projects &rarr;</a>
+    <a href="/contact" class="btn">Get In Touch</a>
+  </div>
+
+  <div class="stats reveal">
+    <div class="stat"><div class="num">316</div><div class="lbl">SS Test Stand</div></div>
+    <div class="stat"><div class="num">4-20</div><div class="lbl">mA Loop DAQ</div></div>
+    <div class="stat"><div class="num">6 ft</div><div class="lbl">CAD Envelope</div></div>
+    <div class="stat"><div class="num">&infin;</div><div class="lbl">Late Nights</div></div>
+  </div>
+</header>
+
+<section class="section wrap">
+  <div class="sec-head reveal">
+    <div class="sec-title">Featured Work</div>
+    <a href="/projects" class="sec-link">ALL PROJECTS &rarr;</a>
+  </div>
+
+  <div class="proj reveal"><div class="proj-top">
+    <div class="proj-num">01</div>
+    <div class="proj-body">
+      <div class="proj-meta">PROPULSION · TEST HARDWARE · ACTIVE</div>
+      <h2>HTP / Jet-A Bipropellant Test Stand</h2>
+      <p>A full test stand for a high-test-peroxide / Jet-A bipropellant rocket engine, built for accurate, repeatable thrust and combustion data. Floating engine-mount plate, full instrumentation, and dissimilar-metal weld design.</p>
+      <div class="chips"><span class="chip">SolidWorks</span><span class="chip">316 SS</span><span class="chip">Thermal FEA</span><span class="chip">Swagelok</span><span class="chip">DAQ</span></div>
+    </div>
+  </div></div>
+
+  <div class="proj reveal"><div class="proj-top">
+    <div class="proj-num">02</div>
+    <div class="proj-body">
+      <div class="proj-meta">AEROSPACE · UAV · IN PROGRESS</div>
+      <h2>Long-Range Reconnaissance Fixed-Wing UAV</h2>
+      <p>A fixed-wing RC platform designed for endurance and range, with the power system as the central engineering problem &mdash; a LiPo vs Li-Ion trade study and a tuned charging workflow.</p>
+      <div class="chips"><span class="chip">Fixed-wing</span><span class="chip">Li-Ion</span><span class="chip">Power Systems</span><span class="chip">RC</span></div>
+    </div>
+  </div></div>
+
+  <div class="proj reveal"><div class="proj-top">
+    <div class="proj-num">03</div>
+    <div class="proj-body">
+      <div class="proj-meta">INSTRUMENTATION · ANALOG</div>
+      <h2>Pancake Load Cell Signal Chain</h2>
+      <p>A noise-immune analog front end for thrust measurement, converting a load-cell voltage into a 4-20 mA current loop for reliable transmission to the DAQ over long cable runs.</p>
+      <div class="chips"><span class="chip">Analog Design</span><span class="chip">4-20 mA</span><span class="chip">DAQ</span></div>
+    </div>
+  </div></div>
+
+  <div class="proj reveal"><div class="proj-top">
+    <div class="proj-num">04</div>
+    <div class="proj-body">
+      <div class="proj-meta">SOFTWARE · GAME</div>
+      <h2>Lexadex — Roguelike Language Learning</h2>
+      <p>A language-learning game that borrows roguelike structure: run-based progression, randomized encounters, and incremental mastery. Built in React / Expo for cross-platform deployment.</p>
+      <div class="chips"><span class="chip">React</span><span class="chip">Expo</span><span class="chip">Game Design</span></div>
+    </div>
+  </div></div>
+</section>
+
+<footer><div class="wrap foot-in">
+  <span>© 2026 PARKER · NC STATE MAE</span>
+  <span><a href="/contact">CONTACT</a> · <a href="/projects">WORK</a></span>
+</div></footer>
+
+</div>
+
 <script>
-var REDUCE=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var HAS3D=(typeof THREE!=='undefined');
-
-function tick(){var d=new Date(),el=document.getElementById('clock');
-  if(el)el.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-tick();setInterval(tick,15000);
-
-/* ---- shared glow sprite texture ---- */
-function glowTexture(){
-  var s=128,c=document.createElement('canvas');c.width=c.height=s;var g=c.getContext('2d');
-  var rg=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
-  rg.addColorStop(0,'rgba(255,255,255,1)');
-  rg.addColorStop(0.2,'rgba(223,255,176,0.95)');
-  rg.addColorStop(0.45,'rgba(125,255,60,0.55)');
-  rg.addColorStop(0.75,'rgba(47,138,28,0.18)');
-  rg.addColorStop(1,'rgba(47,138,28,0)');
-  g.fillStyle=rg;g.fillRect(0,0,s,s);
-  var t=new THREE.Texture(c);t.needsUpdate=true;return t;
+var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var done = false;
+function startReveals(){
+  var els=[].slice.call(document.querySelectorAll('.reveal'));
+  if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in')});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.08,rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(el,i){el.style.transitionDelay=(i%4*70)+'ms';io.observe(el)});
+  // safety net: anything still hidden after 1.6s gets shown (covers fast scrolls / edge cases)
+  setTimeout(function(){els.forEach(function(el){el.classList.add('in')});},1600);
 }
-
-/* ============ BOOT REACTOR (Three.js) ============ */
-var booted=false;
-function endBoot(){
-  if(booted)return;booted=true;
-  clearTimeout(window._bt);
-  document.getElementById('boot').classList.add('done');
-  document.getElementById('dash').classList.add('show');
-  startOrb();startAmbient();
+function endIntro(){
+  if(done) return; done = true;
+  document.getElementById('intro').classList.add('done');
+  document.getElementById('site').classList.add('show');
+  startReveals();
 }
-
-(function(){
-  if(!HAS3D){ // graceful fallback: no WebGL, just go to dash
-    setTimeout(endBoot,400);return;
-  }
-  var canvas=document.getElementById('bootgl');
-  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  var scene=new THREE.Scene();
-  var camera=new THREE.PerspectiveCamera(55,1,0.1,100);
-  camera.position.set(0,0,16);
-  function resize(){var w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
-  resize();window.addEventListener('resize',resize);
-
-  var tex=glowTexture();
-  var grp=new THREE.Group();scene.add(grp);
-
-  // converging energy particles
-  var N=900,geo=new THREE.BufferGeometry(),pos=new Float32Array(N*3),home=new Float32Array(N*3),rnd=new Float32Array(N);
-  for(var i=0;i<N;i++){
-    var th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1),R=9+Math.random()*7;
-    home[i*3]=Math.sin(ph)*Math.cos(th)*R;home[i*3+1]=Math.sin(ph)*Math.sin(th)*R;home[i*3+2]=Math.cos(ph)*R;
-    pos[i*3]=home[i*3];pos[i*3+1]=home[i*3+1];pos[i*3+2]=home[i*3+2];rnd[i]=Math.random();
-  }
-  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-  var pmat=new THREE.PointsMaterial({size:0.5,map:tex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0.9,color:0xbfff7a});
-  var pts=new THREE.Points(geo,pmat);grp.add(pts);
-
-  // layered translucent energy shells (the volumetric core)
-  var shells=[];
-  for(var s=0;s<5;s++){
-    var sg=new THREE.SphereGeometry(0.6+s*0.5,40,40);
-    var sm=new THREE.MeshBasicMaterial({color:s<2?0xeaffd0:0x7dff3c,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,wireframe:s>=3});
-    var sh=new THREE.Mesh(sg,sm);grp.add(sh);shells.push(sh);
-  }
-  // bright core sprite
-  var coreMat=new THREE.SpriteMaterial({map:tex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0});
-  var core=new THREE.Sprite(coreMat);core.scale.set(0,0,0);grp.add(core);
-
-  // shock ring
-  var ringGeo=new THREE.RingGeometry(1,1.06,80);
-  var ringMat=new THREE.MeshBasicMaterial({color:0x9dff5c,transparent:true,opacity:0,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false});
-  var ring=new THREE.Mesh(ringGeo,ringMat);grp.add(ring);
-
-  var t0=performance.now(),DUR=6300;
-  function frame(now){
-    var t=(now-t0)/DUR;if(t>1)t=1;
-    var ease=1-Math.pow(1-t,3);
-
-    grp.rotation.y=now*0.00018;grp.rotation.x=Math.sin(now*0.0002)*0.25;
-
-    // particles converge then swirl into core
-    var p=geo.attributes.position.array;
-    var pull=Math.min(t/0.78,1);pull=pull*pull*(3-2*pull);
-    for(var i=0;i<N;i++){
-      var tgt=1.1+rnd[i]*1.6; // final radius near core
-      var hx=home[i*3],hy=home[i*3+1],hz=home[i*3+2];
-      var hr=Math.sqrt(hx*hx+hy*hy+hz*hz);
-      var k=(hr*(1-pull)+tgt*pull)/hr;
-      var spin=pull*now*0.0006*(0.5+rnd[i]);
-      var cs=Math.cos(spin),sn=Math.sin(spin);
-      var x=hx*k,y=hy*k,z=hz*k;
-      p[i*3]=x*cs-z*sn;p[i*3+1]=y;p[i*3+2]=x*sn+z*cs;
-    }
-    geo.attributes.position.needsUpdate=true;
-    pmat.opacity=0.85*(1-Math.max(0,(t-0.85)/0.15)); // fade particles at end
-
-    // core grows + pulses
-    var grow=Math.min(t/0.8,1);grow=grow*grow*(3-2*grow);
-    var pulse=1+0.12*Math.sin(now*0.012);
-    var cs2=grow*6.2*pulse;core.scale.set(cs2,cs2,1);coreMat.opacity=grow;
-
-    // shells bloom
-    for(var s2=0;s2<shells.length;s2++){
-      var sh=shells[s2];sh.rotation.y=now*0.0003*(s2+1);sh.rotation.x=now*0.0002*(s2+1);
-      var sc=grow*(1+s2*0.12);sh.scale.set(sc,sc,sc);
-      sh.material.opacity=grow*(0.10+ (s2>=3?0.06:0.04));
-    }
-
-    // shock ring at climax
-    if(t>0.8){var rt=(t-0.8)/0.2;var rs=1+rt*16;ring.scale.set(rs,rs,1);ringMat.opacity=0.6*(1-rt);ring.lookAt(camera.position);}
-
-    renderer.render(scene,camera);
-    if(t<1){requestAnimationFrame(frame);}else{endBoot();}
-  }
-
-  if(REDUCE){ // hold a still glowing core briefly
-    var grow=1;core.scale.set(6.2,6.2,1);coreMat.opacity=1;shells.forEach(function(sh,s2){sh.material.opacity=0.12;});
-    renderer.render(scene,camera);setTimeout(endBoot,900);
-  } else {
-    requestAnimationFrame(frame);
-    window._bt=setTimeout(endBoot,DUR+500);
-  }
+(function runIntro(){
+  // the wordmark reveal is pure CSS; JS just ends the intro once it has settled
+  if(REDUCE){ setTimeout(endIntro,400); return; }
+  setTimeout(endIntro,2500);
 })();
-
-/* ============ SOLAR SYSTEM (Three.js) ============ */
-function startOrb(){
-  if(!HAS3D){return;}
-  var canvas=document.getElementById('orbgl');
-  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  var scene=new THREE.Scene();
-  var camera=new THREE.PerspectiveCamera(48,1,0.1,400);
-  function place(){
-    var w=window.innerWidth;
-    // wide screens: system sits lower-left, behind/left of the menu. narrow: centered.
-    var off = w>860 ? -7.5 : 0;
-    var lookY = w>860 ? 4.5 : 0;   // look above center -> system renders lower in frame
-    camera.position.set(off,9,30);camera.lookAt(off,lookY,0);
-  }
-  place();
-  function resize(){var w=window.innerWidth,h=window.innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;place();camera.updateProjectionMatrix();}
-  resize();window.addEventListener('resize',resize);
-
-  var tex=glowTexture();
-
-  // World layout: everything is built around CX. The TILT group holds the static
-  // orbital plane orientation. The SUN sits fixed at CX and never spins.
-  // Only the SPIN group (orbits + planets) rotates, and it spins about its OWN
-  // center (CX) via an inner offset, so the sun stays put.
-  var tilt=new THREE.Group();scene.add(tilt);
-  tilt.rotation.x=0.30;            // flatter tilt -> wide ellipses like the reference
-  tilt.rotation.z=0.05;
-
-  var CX = window.innerWidth>860 ? -7.5 : 0;   // world-x the system is centered on
-
-  // ----- SUN (fixed, never moves) -----
-  var sunGroup=new THREE.Group();sunGroup.position.x=CX;tilt.add(sunGroup);
-  var sunMat=new THREE.SpriteMaterial({map:tex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:1});
-  var sun=new THREE.Sprite(sunMat);sun.scale.set(8,8,1);sunGroup.add(sun);
-  var sunCore=new THREE.Mesh(new THREE.SphereGeometry(1.0,32,32),new THREE.MeshBasicMaterial({color:0xf4ffdc}));sunGroup.add(sunCore);
-
-  // ----- SPIN group: holds orbits + planets, rotates about CX -----
-  var spinPivot=new THREE.Group();spinPivot.position.x=CX;tilt.add(spinPivot); // pivot sits at sun
-  var spin=new THREE.Group();spinPivot.add(spin);  // rotating; children built relative to CX(=0 here)
-
-  // faint starfield (independent, far back)
-  var SN=420,sgeo=new THREE.BufferGeometry(),sp=new Float32Array(SN*3);
-  for(var i=0;i<SN;i++){var rr=40+Math.random()*90,a=Math.random()*7,b=Math.acos(2*Math.random()-1);
-    sp[i*3]=Math.sin(b)*Math.cos(a)*rr;sp[i*3+1]=(Math.random()-0.5)*60;sp[i*3+2]=Math.sin(b)*Math.sin(a)*rr;}
-  sgeo.setAttribute('position',new THREE.BufferAttribute(sp,3));
-  var stars=new THREE.Points(sgeo,new THREE.PointsMaterial({color:0x4f8a3a,size:0.4,transparent:true,opacity:0.55,depthWrite:false}));
-  scene.add(stars);
-
-  // Planets sized realistically *relative to the sun* (sun core radius = 1.0).
-  // Real gas giants are ~0.1 of the sun; terrestrials far smaller. We exaggerate
-  // slightly for visibility but keep everything clearly smaller than the sun.
-  // sz values: two "gas giants" ~0.34/0.28, rest small terrestrials.
-  var defs=[
-    {r:5,   sz:0.10, sp:0.50},
-    {r:8,   sz:0.16, sp:0.36},
-    {r:11.5,sz:0.14, sp:0.26},
-    {r:15,  sz:0.34, sp:0.19},
-    {r:19,  sz:0.28, sp:0.13},
-    {r:23.5,sz:0.12, sp:0.09}
-  ];
-  var planets=[];
-  defs.forEach(function(d,idx){
-    var seg=160,og=new THREE.BufferGeometry(),op=new Float32Array(seg*3);
-    for(var i=0;i<seg;i++){var a=i/seg*Math.PI*2;op[i*3]=Math.cos(a)*d.r;op[i*3+1]=0;op[i*3+2]=Math.sin(a)*d.r;}
-    og.setAttribute('position',new THREE.BufferAttribute(op,3));
-    var orbit=new THREE.LineLoop(og,new THREE.LineBasicMaterial({color:0x3fae22,transparent:true,opacity:0.30}));
-    spin.add(orbit);
-    var pg=new THREE.Group();
-    var glow=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
-    var gscale=Math.max(d.sz*4.5,0.7);            // glow halo, min size so small planets still read
-    glow.scale.set(gscale,gscale,1);pg.add(glow);
-    var body=new THREE.Mesh(new THREE.SphereGeometry(d.sz,20,20),new THREE.MeshBasicMaterial({color:0xd6ffae}));pg.add(body);
-    spin.add(pg);
-    planets.push({g:pg,d:d,ph:idx*(Math.PI*2/defs.length)+idx*0.5});
-  });
-
-  var start=performance.now();
-  function frame(now){
-    var t=(now-start)/1000;
-    spin.rotation.y=t*0.04;          // ONLY the orbits/planets spin; sun is fixed
-    stars.rotation.y=t*0.008;
-    sunMat.opacity=0.9+0.1*Math.sin(t*2.2);
-    var sc=7.6+0.6*Math.sin(t*1.7);sun.scale.set(sc,sc,1);
-    planets.forEach(function(pl){var a=t*pl.d.sp+pl.ph;pl.g.position.set(Math.cos(a)*pl.d.r,0,Math.sin(a)*pl.d.r);});
-    renderer.render(scene,camera);
-    if(!REDUCE)requestAnimationFrame(frame);
-  }
-  if(REDUCE){frame(start);}else{requestAnimationFrame(frame);}
-}
-
-/* ============ AMBIENT HAZE (2D canvas) ============ */
-function startAmbient(){
-  var cv=document.getElementById('ambient');if(!cv)return;var x=cv.getContext('2d'),DPR=Math.min(window.devicePixelRatio,2),W,H;
-  function size(){W=window.innerWidth;H=window.innerHeight;cv.width=W*DPR;cv.height=H*DPR;x.setTransform(DPR,0,0,DPR,0,0);}
-  size();window.addEventListener('resize',size);
-  var blobs=[];for(var i=0;i<5;i++)blobs.push({x:Math.random(),y:Math.random(),r:0.3+Math.random()*0.4,dx:(Math.random()-.5)*6e-5,dy:(Math.random()-.5)*6e-5,ph:Math.random()*7});
-  function frame(now){x.clearRect(0,0,W,H);
-    for(var i=0;i<blobs.length;i++){var b=blobs[i];b.x+=b.dx;b.y+=b.dy;if(b.x<-.2||b.x>1.2)b.dx*=-1;if(b.y<-.2||b.y>1.2)b.dy*=-1;
-      var R=b.r*Math.max(W,H)*(0.7+0.15*Math.sin(now/3000+b.ph));
-      var g=x.createRadialGradient(b.x*W,b.y*H,0,b.x*W,b.y*H,R);
-      g.addColorStop(0,'rgba(47,138,28,0.15)');g.addColorStop(0.5,'rgba(20,70,12,0.07)');g.addColorStop(1,'rgba(2,10,4,0)');
-      x.fillStyle=g;x.beginPath();x.arc(b.x*W,b.y*H,R,0,7);x.fill();}
-    if(!REDUCE)requestAnimationFrame(frame);}
-  if(REDUCE){frame(0);}else{requestAnimationFrame(frame);}
-}
+// safety fallback
+setTimeout(endIntro,3200);
 </script>
 </body>
 </html>
