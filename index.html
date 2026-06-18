@@ -3,295 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parker McCall — Aerospace · Propulsion · Maker</title>
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<title>Parker McCall — Flow Field</title>
 <style>
-:root{--bg:#0a0c10;--panel:#0f1318;--line:#1d242d;--line2:#2a333d;--text:#e6edf3;--dim:#8b97a3;--faint:#5a6573;--accent:#ff5c2b;--accent2:#3ddc97;--grid:rgba(255,255,255,.025);--mono:'Space Mono',monospace;--sans:'Sora',sans-serif}
-*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+  :root{
+    --bg:#070707; --ink:#f5f3ee; --dim:#8c8c84; --hot:#ff6b35; --cool:#48cae4;
+    --disp:'Helvetica Neue',Arial,sans-serif; --mono:ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--disp);overflow-x:hidden}
+  canvas#flow{position:fixed;inset:0;z-index:0}
 
-/* ===== INTRO — name reveal: light sweeps across the wordmark ===== */
-#intro{position:fixed;inset:0;z-index:1000;background:#06070a;cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity .7s ease,visibility .7s ease;overflow:hidden}
-#intro.done{opacity:0;visibility:hidden;pointer-events:none}
-/* same grid surface as the site, plus a soft vignette so the centre reads bright */
-#intro .intro-grid{position:absolute;inset:0;z-index:0;pointer-events:none;
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:48px 48px;
-  -webkit-mask-image:radial-gradient(circle at 50% 45%,#000 0%,rgba(0,0,0,.5) 55%,transparent 85%);
-          mask-image:radial-gradient(circle at 50% 45%,#000 0%,rgba(0,0,0,.5) 55%,transparent 85%)}
-/* opens on a pure black screen, then fades to reveal the grid */
-#intro::before{content:'';position:absolute;inset:0;background:#000;z-index:5;pointer-events:none;
-  animation:introWash .8s ease .15s forwards}
-@keyframes introWash{to{opacity:0}}
+  /* ---- INTRO ---- */
+  #intro{position:fixed;inset:0;z-index:50;background:radial-gradient(circle at 50% 50%,#0c0c0c,#000 75%);
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    transition:opacity .8s ease,visibility .8s}
+  #intro.done{opacity:0;visibility:hidden}
+  /* solar system sits centred, between the two text blocks */
+  #solar{position:absolute;inset:0;z-index:1}
+  /* title above + subtitle below, fade in together */
+  .intro-title,.intro-sub{position:relative;z-index:3;text-align:center;opacity:0;
+    animation:introTextIn 1s ease .6s forwards}
+  @keyframes introTextIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .intro-title{font-size:clamp(38px,9vw,96px);font-weight:800;letter-spacing:-.03em;
+    color:var(--ink);line-height:.95;margin-bottom:auto;padding-top:9vh}
+  .intro-sub{font-family:var(--mono);font-size:clamp(12px,1.6vw,15px);letter-spacing:.42em;
+    color:var(--hot);margin-top:auto;padding-bottom:9vh;text-transform:uppercase}
 
-.intro-in{position:relative;z-index:4;width:100%;max-width:980px;padding:0 32px;text-align:center;
-  display:flex;flex-direction:column;align-items:center;gap:22px}
-.intro-tag{font-family:var(--mono);font-size:clamp(10px,2.6vw,12px);color:var(--accent2);letter-spacing:3px;
-  display:inline-flex;align-items:center;gap:10px;opacity:0;animation:fadeIn .5s ease 1.35s forwards}
-.intro-tag::before,.intro-tag::after{content:'';width:24px;height:1px;background:var(--accent2);opacity:.7}
-
-/* the wordmark: mono, technical, one line. base letters sit dim; a bright band sweeps across. */
-.wordmark{position:relative;font-family:var(--mono);font-weight:700;letter-spacing:.04em;
-  font-size:clamp(26px,7.2vw,76px);line-height:1;white-space:nowrap;color:#2c333d;
-  text-transform:uppercase}
-.wordmark .lo{font-weight:400;text-transform:none}
-/* the lit copy, stacked exactly on top, masked to a moving vertical band of light */
-.wordmark .lit{position:absolute;inset:0;color:#fff;text-align:center;
-  text-shadow:0 0 14px rgba(255,255,255,.55),0 0 34px rgba(255,255,255,.25);
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 12%,transparent 20%);
-          mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 12%,transparent 20%);
-  -webkit-mask-size:500% 100%;mask-size:500% 100%;
-  -webkit-mask-position:-60% 0;mask-position:-60% 0;
-  animation:sweep 1.5s cubic-bezier(.45,.05,.3,1) .35s forwards}
-@keyframes sweep{to{-webkit-mask-position:160% 0;mask-position:160% 0}}
-/* after the sweep, settle the whole wordmark to a clean solid white */
-.wordmark .settle{position:absolute;inset:0;color:#eef2f6;text-align:center;opacity:0;
-  animation:settleIn .5s ease 1.7s forwards}
-@keyframes settleIn{to{opacity:1}}
-
-.skip{position:absolute;bottom:26px;left:0;right:0;z-index:6;text-align:center;
-  font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--faint);
-  opacity:0;animation:fadeIn .6s ease 1.1s forwards;text-transform:uppercase}
-.skip:hover{color:var(--accent)}
-
-/* ===== SITE ===== */
-#site{opacity:0;transition:opacity 1.1s ease}
-#site.show{opacity:1}
-
-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,12,16,.78);border-bottom:1px solid var(--line)}
-.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
-.logo{font-family:var(--mono);font-weight:700;letter-spacing:1px;font-size:15px}.logo b{color:var(--accent)}
-.nav-links{display:flex;gap:34px;font-family:var(--mono);font-size:13px}
-.nav-links a{color:var(--dim);transition:color .2s;position:relative}
-.nav-links a:hover,.nav-links a.active{color:var(--text)}
-.nav-links a.active::after{content:'';position:absolute;bottom:-6px;left:0;width:100%;height:2px;background:var(--accent)}
-.burger{display:none;font-family:var(--mono);color:var(--dim);background:none;border:1px solid var(--line2);padding:6px 12px;border-radius:6px;cursor:pointer}
-
-/* hero */
-.hero{padding-block:96px 70px}
-.tag{font-family:var(--mono);font-size:12px;color:var(--accent2);letter-spacing:2px;margin-bottom:24px;display:inline-flex;align-items:center;gap:10px}
-.tag::before{content:'';width:28px;height:1px;background:var(--accent2)}
-.hero h1{font-size:clamp(40px,7vw,82px);font-weight:800;letter-spacing:-2px;line-height:1.02;max-width:14ch}
-.hero h1 .warm{color:var(--accent)}
-.hero .lede{color:var(--dim);font-weight:300;font-size:18px;max-width:560px;margin-top:24px}
-.cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
-.btn{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:1px;padding:14px 24px;border-radius:10px;border:1px solid var(--line2);color:var(--text);text-transform:uppercase;transition:.2s;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-.btn:hover{border-color:var(--accent);color:#fff}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#10100c}
-.btn.primary:hover{background:#ff7148;border-color:#ff7148}
-
-/* stat band */
-.stats{margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
-.stat{padding:30px 32px;border-right:1px solid var(--line)}
-.stat:last-child{border-right:none}
-.stat .num{font-family:var(--mono);font-weight:700;font-size:36px;color:var(--accent);letter-spacing:1px;line-height:1}
-.stat .lbl{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--faint);margin-top:14px;text-transform:uppercase}
-
-/* featured work — same panel language as the projects page */
-.section{padding-block:30px 20px}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:10px}
-.sec-title{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--accent2);text-transform:uppercase;display:inline-flex;align-items:center;gap:10px}
-.sec-title::before{content:'';width:28px;height:1px;background:var(--accent2)}
-.sec-link{font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--faint)}
-.sec-link:hover{color:var(--accent)}
-
-.proj{border:1px solid var(--line);border-radius:16px;background:var(--panel);margin-bottom:24px;overflow:hidden;transition:.25s}
-.proj:hover{border-color:var(--line2)}
-.proj-top{display:grid;grid-template-columns:120px 1fr;gap:0}
-.proj-num{background:linear-gradient(160deg,#12171d,#0c1014);border-right:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:40px;font-weight:700;color:var(--accent);padding:30px 0}
-.proj-body{padding:34px 36px}
-.proj-meta{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:2px;text-transform:uppercase}
-.proj-body h2{font-size:24px;font-weight:600;margin:10px 0 12px}
-.proj-body p{color:var(--dim);font-weight:300;margin-bottom:8px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
-.chip{font-family:var(--mono);font-size:11px;color:var(--accent2);border:1px solid var(--line2);padding:4px 10px;border-radius:20px}
-
-footer{border-top:1px solid var(--line);padding:50px 0;margin-top:40px}
-.foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:13px;color:var(--faint);flex-wrap:wrap;gap:16px}
-.foot-in a:hover{color:var(--accent)}
-
-.reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
-
-@keyframes fadeIn{to{opacity:1}}
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:1024px){
-  .wrap{padding:0 28px}
-  .hero h1{font-size:clamp(38px,7vw,72px)}
-}
-@media(max-width:780px){
-  .wrap{padding:0 22px}
-  .nav-links{display:none}.burger{display:block}
-  .nav-links.open{display:flex;position:absolute;top:68px;left:0;right:0;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 22px;gap:18px}
-  .hero{padding-block:56px 46px}
-  .hero h1{font-size:clamp(34px,9vw,58px);letter-spacing:-1px;max-width:100%}
-  .hero .lede{font-size:16px;margin-top:20px}
-  .cta{margin-top:30px;gap:12px}
-  .btn{flex:1 1 auto;justify-content:center;padding:14px 18px}
-  .stats{margin-top:48px;grid-template-columns:repeat(2,1fr)}
-  .stat{padding:24px 22px}
-  .stat .num{font-size:30px}
-  .stat:nth-child(2){border-right:none}
-  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}
-  .sec-head{margin-bottom:22px}
-  .proj{margin-bottom:18px}
-  .proj-top{grid-template-columns:1fr}
-  .proj-num{border-right:none;border-bottom:1px solid var(--line);padding:14px 0;font-size:26px;justify-content:flex-start;padding-left:24px}
-  .proj-body{padding:24px 22px}
-  .proj-body h2{font-size:21px}
-  footer{padding:36px 0;margin-top:28px}
-  .foot-in{flex-direction:column;align-items:flex-start;gap:12px}
-  /* the script needs to be readable on a phone — let it fill more width */
-  #intro svg{margin:14px 0 12px}
-  .intro-in{padding:0 22px}
-  .scan{animation-duration:1.3s}
-}
-@media(max-width:480px){
-  .hero h1{font-size:clamp(30px,11vw,46px)}
-  .btn{flex:1 1 100%}
-  .stats{grid-template-columns:1fr}
-  .stat{border-right:none;border-bottom:1px solid var(--line);padding:20px 22px;display:flex;align-items:baseline;justify-content:space-between}
-  .stat:last-child{border-bottom:none}
-  .stat .lbl{margin-top:0}
-  .proj-body p{font-size:14px}
-}
-@media(prefers-reduced-motion:reduce){
-  .wordmark .lit{display:none}
-  .wordmark .settle{opacity:1;animation:none}
-  .intro-tag,.skip{animation:none;opacity:1}
-  .reveal{opacity:1;transform:none;transition:none}
-}
+  header{position:relative;z-index:3;display:flex;justify-content:space-between;
+    padding:26px 40px;mix-blend-mode:difference}
+  .logo{font-family:var(--mono);font-size:13px;letter-spacing:.22em;font-weight:700}
+  nav a{color:var(--ink);text-decoration:none;font-size:12px;letter-spacing:.16em;
+    margin-left:28px;font-family:var(--mono);opacity:.7}
+  nav a:hover{opacity:1;color:var(--hot)}
+  .hero{position:relative;z-index:3;min-height:80vh;display:flex;flex-direction:column;
+    justify-content:center;padding:0 40px;max-width:1200px;margin:0 auto;pointer-events:none}
+  .mtag{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--hot);margin-bottom:18px}
+  h1{font-size:clamp(44px,11vw,150px);font-weight:800;line-height:.9;letter-spacing:-.04em;
+    mix-blend-mode:difference}
+  .sub{margin-top:28px;max-width:480px;color:var(--dim);font-size:15px;line-height:1.6;
+    font-family:var(--mono);letter-spacing:.02em;pointer-events:auto}
+  .strip{position:relative;z-index:3;display:flex;gap:0;border-top:1px solid #1c1c1a;
+    border-bottom:1px solid #1c1c1a;margin-top:60px;background:rgba(7,7,7,.6);backdrop-filter:blur(2px)}
+  .strip a{flex:1;padding:30px 26px;text-decoration:none;color:var(--ink);
+    border-right:1px solid #1c1c1a;transition:.3s;position:relative}
+  .strip a:last-child{border-right:none}
+  .strip a:hover{background:var(--hot);color:#070707}
+  .strip .n{font-family:var(--mono);font-size:11px;letter-spacing:.2em;opacity:.55}
+  .strip .t{font-size:19px;font-weight:700;margin-top:10px}
+  .strip .d{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:6px;letter-spacing:.03em}
+  .strip a:hover .d,.strip a:hover .n{color:#070707;opacity:.8}
+  footer{position:relative;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+    color:var(--dim);text-align:center;padding:40px}
+  @media(max-width:760px){.strip{flex-direction:column}.strip a{border-right:none;border-bottom:1px solid #1c1c1a}}
+  @media(max-width:600px){
+    .intro-sub{letter-spacing:.3em;padding-bottom:7vh}
+    .intro-title{padding-top:7vh;letter-spacing:-.02em}
+    header{flex-direction:column;gap:14px;align-items:flex-start;padding:20px 22px}
+    nav a{margin-left:0;margin-right:20px}
+    .hero{padding:0 22px;min-height:78vh}
+    .sub{font-size:14px}
+    .strip a{padding:24px 22px}
+    footer{padding:30px 22px;font-size:10px}
+  }
 </style>
 </head>
 <body>
-
-<!-- ===== INTRO ===== -->
-<div id="intro" onclick="endIntro()">
-  <div class="intro-grid"></div>
-  <div class="intro-in">
-    <div class="wordmark" aria-label="Parker McCall">
-      <span class="base">PARKER McCALL</span>
-      <span class="lit" aria-hidden="true">PARKER McCALL</span>
-      <span class="settle" aria-hidden="true">PARKER McCALL</span>
-    </div>
-  </div>
-  <div class="skip">click to skip</div>
-</div>
-
-<!-- ===== SITE ===== -->
-<div id="site">
-
-<nav><div class="wrap nav-in">
-  <a href="/" class="logo">ParkerMcCall<b>.</b>com</a>
-  <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')">MENU</button>
-  <div class="nav-links" id="nl">
-    <a href="/" class="active">/home</a><a href="/projects">/projects</a>
-    <a href="/about">/about</a><a href="/contact">/contact</a>
-  </div>
-</div></nav>
-
-<header class="hero wrap">
-  <div class="tag reveal">AEROSPACE · PROPULSION · MAKER</div>
-  <h1 class="reveal">Passion for building things that have<span class="warm"> no comparison.</span></h1>
-  <p class="lede reveal">Junior aerospace engineering student at NC State. I design bi-propellant propulsion test hardware, fly fixed/variable wing RC, and specialze in building with CAD, code, and powertools.</p>
-  <div class="cta reveal">
-    <a href="/projects" class="btn primary">View Projects &rarr;</a>
-    <a href="/contact" class="btn">Get In Touch</a>
+  <div id="intro">
+    <canvas id="solar"></canvas>
+    <div class="intro-title">Parker McCall</div>
+    <div class="intro-sub">Aerospace Engineer</div>
   </div>
 
-  <div class="stats reveal">
-    <div class="stat"><div class="num">84</div><div class="lbl">CAD Projects</div></div>
-    <div class="stat"><div class="num">4</div><div class="lbl">Woodworking Projects</div></div>
-    <div class="stat"><div class="num">11</div><div class="lbl">Coding Projects</div></div>
-    <div class="stat"><div class="num">1</div><div class="lbl">Circuitry Projects</div></div>
+  <canvas id="flow"></canvas>
+  <header>
+    <div class="logo">PARKER McCALL</div>
+    <nav><a href="#">WORK</a><a href="#">ABOUT</a><a href="#">CHANNEL</a></nav>
+  </header>
+  <section class="hero">
+    <div class="mtag">M ≈ 1.0 · NC STATE AEROSPACE</div>
+    <h1>Aerospace<br>engineer.</h1>
+    <p class="sub">I work where the air gets violent — propulsion, experimental
+    aerodynamics, and hardware that has to survive its own exhaust.</p>
+  </section>
+  <div class="strip">
+    <a href="#"><div class="n">001 / PROPULSION</div><div class="t">HTP / Jet-A Stand</div><div class="d">Hot-fire instrumentation</div></a>
+    <a href="#"><div class="n">002 / AERO</div><div class="t">Cp/Cl/Cd Pipeline</div><div class="d">MATLAB · AIAA reports</div></a>
+    <a href="#"><div class="n">003 / FLIGHT</div><div class="t">RC Fixed-Wing</div><div class="d">Airframe + battery R&amp;D</div></a>
+    <a href="#"><div class="n">004 / MAKER</div><div class="t">Build Log</div><div class="d">YouTube · 3D print · wood</div></a>
   </div>
-</header>
-
-<section class="section wrap">
-  <div class="sec-head reveal">
-    <div class="sec-title">Featured Work</div>
-    <a href="/projects" class="sec-link">ALL PROJECTS &rarr;</a>
-  </div>
-
-  <div class="proj reveal"><div class="proj-top">
-    <div class="proj-num">01</div>
-    <div class="proj-body">
-      <div class="proj-meta">PROPULSION · TEST HARDWARE · ACTIVE</div>
-      <h2>HTP / Jet-A Bipropellant Test Stand</h2>
-      <p>A full test stand for a high-test-peroxide / Jet-A bipropellant rocket engine, built for accurate, repeatable thrust and combustion data. Floating engine-mount plate, full instrumentation, and dissimilar-metal weld design.</p>
-      <div class="chips"><span class="chip">SolidWorks</span><span class="chip">316 SS</span><span class="chip">Thermal FEA</span><span class="chip">Swagelok</span><span class="chip">DAQ</span></div>
-    </div>
-  </div></div>
-
-  <div class="proj reveal"><div class="proj-top">
-    <div class="proj-num">02</div>
-    <div class="proj-body">
-      <div class="proj-meta">AEROSPACE · UAV · IN PROGRESS</div>
-      <h2>Long-Range Reconnaissance Fixed-Wing UAV</h2>
-      <p>A fixed-wing RC platform designed for endurance and range, with the power system as the central engineering problem &mdash; a LiPo vs Li-Ion trade study and a tuned charging workflow.</p>
-      <div class="chips"><span class="chip">Fixed-wing</span><span class="chip">Li-Ion</span><span class="chip">Power Systems</span><span class="chip">RC</span></div>
-    </div>
-  </div></div>
-
-  <div class="proj reveal"><div class="proj-top">
-    <div class="proj-num">03</div>
-    <div class="proj-body">
-      <div class="proj-meta">INSTRUMENTATION · ANALOG</div>
-      <h2>Pancake Load Cell Signal Chain</h2>
-      <p>A noise-immune analog front end for thrust measurement, converting a load-cell voltage into a 4-20 mA current loop for reliable transmission to the DAQ over long cable runs.</p>
-      <div class="chips"><span class="chip">Analog Design</span><span class="chip">4-20 mA</span><span class="chip">DAQ</span></div>
-    </div>
-  </div></div>
-
-  <div class="proj reveal"><div class="proj-top">
-    <div class="proj-num">04</div>
-    <div class="proj-body">
-      <div class="proj-meta">SOFTWARE · GAME</div>
-      <h2>Lexadex — Roguelike Language Learning</h2>
-      <p>A language-learning game that borrows roguelike structure: run-based progression, randomized encounters, and incremental mastery. Built in React / Expo for cross-platform deployment.</p>
-      <div class="chips"><span class="chip">React</span><span class="chip">Expo</span><span class="chip">Game Design</span></div>
-    </div>
-  </div></div>
-</section>
-
-<footer><div class="wrap foot-in">
-  <span>© 2026 PARKER · NC STATE MAE</span>
-  <span><a href="/contact">CONTACT</a> · <a href="/projects">WORK</a></span>
-</div></footer>
-
-</div>
+  <footer>© 2026 PARKER McCALL — VISUALIZED IN SCHLIEREN</footer>
 
 <script>
-var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var done = false;
-function startReveals(){
-  var els=[].slice.call(document.querySelectorAll('.reveal'));
-  if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in')});return;}
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.08,rootMargin:'0px 0px -8% 0px'});
-  els.forEach(function(el,i){el.style.transitionDelay=(i%4*70)+'ms';io.observe(el)});
-  // safety net: anything still hidden after 1.6s gets shown (covers fast scrolls / edge cases)
-  setTimeout(function(){els.forEach(function(el){el.classList.add('in')});},1600);
-}
-function endIntro(){
-  if(done) return; done = true;
-  document.getElementById('intro').classList.add('done');
-  document.getElementById('site').classList.add('show');
-  startReveals();
-}
-(function runIntro(){
-  // the wordmark reveal is pure CSS; JS just ends the intro once it has settled
-  if(REDUCE){ setTimeout(endIntro,400); return; }
-  setTimeout(endIntro,2500);
+/* ---------------- SCHLIEREN FLOW FIELD (page background) ---------------- */
+(function(){
+  const c=document.getElementById('flow'),x=c.getContext('2d');
+  let W,H,P=[];
+  function size(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;
+    c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';
+    x.setTransform(dpr,0,0,dpr,0,0);
+  }
+  size();addEventListener('resize',size);
+  const COUNT=innerWidth<700?70:140;   // lighter load on phones
+  for(let i=0;i<COUNT;i++)P.push({x:Math.random()*W,y:Math.random()*H,s:.4+Math.random()*1.6,o:.1+Math.random()*.4});
+  function noise(y){return Math.sin(y*0.012)*1.4}
+  (function frame(){
+    x.fillStyle='rgba(7,7,7,0.14)';x.fillRect(0,0,W,H);
+    for(const p of P){
+      const v=2.2*p.s+noise(p.y);
+      p.x+=v;p.y+=Math.sin((p.x+p.y)*0.004)*0.6;
+      if(p.x>W+20){p.x=-20;p.y=Math.random()*H}
+      x.strokeStyle=p.s>1.1?'rgba(255,107,53,'+p.o+')':'rgba(72,202,228,'+(p.o*.8)+')';
+      x.lineWidth=p.s;
+      x.beginPath();x.moveTo(p.x,p.y);x.lineTo(p.x-v*6,p.y-Math.sin((p.x+p.y)*0.004)*3);x.stroke();
+    }
+    requestAnimationFrame(frame);
+  })();
 })();
-// safety fallback
-setTimeout(endIntro,3200);
+
+/* ---------------- SOLAR SYSTEM INTRO (true ellipses) ---------------- */
+(function(){
+  const intro=document.getElementById('intro');
+  const cv=document.getElementById('solar'), g=cv.getContext('2d');
+  let W,H,CX,CY,SCALE,DPR;
+  function size(){
+    DPR=Math.min(window.devicePixelRatio||1,2);     // crisp but capped for perf
+    W=innerWidth;H=innerHeight;
+    cv.width=W*DPR;cv.height=H*DPR;
+    cv.style.width=W+'px';cv.style.height=H+'px';
+    g.setTransform(DPR,0,0,DPR,0,0);                 // draw in CSS pixels
+    CX=W/2;CY=H/2;
+    // outermost orbit semi-major axis is 1.10; divide so it always fits,
+    // and pull in tighter on small/portrait screens to clear the title + subtitle
+    const portrait=H>W;
+    // outermost normalised orbit a=1.0; leave margin so Neptune's ellipse clears edges/text
+    SCALE=Math.min(W,H)/(portrait?2.7:2.5)*0.92;
+  }
+  size();addEventListener('resize',size);
+
+  // starfield (fewer points on small screens)
+  const starCount=Math.min(180,Math.round(innerWidth*innerHeight/9000));
+  const stars=[...Array(starCount)].map(()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.3,tw:Math.random()*6}));
+
+  /* Real solar system, scaled for a clean on-screen view.
+     aAU   = true semi-major axis (AU)
+     e     = true orbital eccentricity (sun sits at a focus)
+     incOrb= true orbital inclination to the ecliptic (deg) -> slight per-orbit tilt
+     node  = longitude of ascending node-ish rotation so tilts point different ways
+     sz    = relative planet size (compressed)
+     col   = approximate true colour
+     Distances are compressed with a^0.62 so Neptune fits without crushing Mercury;
+     periods follow Kepler (T ∝ a^1.5) from real aAU, then time-scaled.            */
+  const RAW=[
+    {name:'Mercury',aAU:0.387,e:0.206,incOrb:7.0, sz:1.4, col:'#b8b3a8'},
+    {name:'Venus',  aAU:0.723,e:0.007,incOrb:3.4, sz:2.7, col:'#e8c98a'},
+    {name:'Earth',  aAU:1.000,e:0.017,incOrb:0.0, sz:2.8, col:'#5fa8e0'},
+    {name:'Mars',   aAU:1.524,e:0.093,incOrb:1.85,sz:1.9, col:'#d8633b'},
+    {name:'Jupiter',aAU:5.203,e:0.049,incOrb:1.30,sz:6.6, col:'#d8a878'},
+    {name:'Saturn', aAU:9.537,e:0.057,incOrb:2.49,sz:5.6, col:'#e8d18a'},
+    {name:'Uranus', aAU:19.19,e:0.046,incOrb:0.77,sz:4.0, col:'#9fe0e0'},
+    {name:'Neptune',aAU:30.07,e:0.011,incOrb:1.77,sz:3.9, col:'#5a78d6'}
+  ];
+  const DIST_COMP=0.62;          // distance compression exponent
+  const aMax=Math.pow(RAW[RAW.length-1].aAU,DIST_COMP);
+  const GLOBAL_TILT=0.42;        // overall ecliptic viewing squash (lower = more edge-on)
+  const planets=RAW.map((p,i)=>{
+    const aN=Math.pow(p.aAU,DIST_COMP)/aMax;            // 0..1 normalised, real spacing
+    return {
+      name:p.name,
+      a:aN,
+      e:p.e,
+      inc:GLOBAL_TILT*(1 - p.incOrb/40),                // global tilt + tiny real variation
+      w:(p.incOrb*0.13)+i*0.7,                          // orbits rotated apart
+      T:Math.pow(p.aAU,1.5)*1.7 + 2.4,                  // Kepler period, time-scaled
+      ph:i*1.05,                                        // staggered start
+      r:p.sz, col:p.col
+    };
+  });
+
+  // project a point in the orbital plane (already inclined+rotated) — returns screen coords
+  function ellipsePoint(p,theta){
+    // radius from focus for a true ellipse (sun at focus)
+    const a=p.a*SCALE;
+    const b=a*Math.sqrt(1-p.e*p.e);
+    // parametric ellipse centred on geometric centre, then shift so focus = sun
+    let ex=a*Math.cos(theta);
+    let ey=b*Math.sin(theta);
+    const cShift=a*p.e;                 // distance centre->focus
+    ex-=cShift;                         // put focus (sun) at origin
+    // rotate ellipse by argument of periapsis w
+    const rx=ex*Math.cos(p.w)-ey*Math.sin(p.w);
+    const ry=ex*Math.sin(p.w)+ey*Math.cos(p.w);
+    // apply inclination as vertical foreshortening for 3D feel
+    return {x:CX+rx, y:CY+ry*p.inc};
+  }
+
+  const t0=performance.now();
+  let raf;
+  function draw(now){
+    const t=(now-t0)/1000;
+    g.clearRect(0,0,W,H);
+
+    // stars
+    for(const s of stars){
+      const al=0.35+0.5*Math.sin(t*2+s.tw);
+      g.fillStyle='rgba(245,243,238,'+(al*0.7)+')';
+      g.beginPath();g.arc(s.x*W,s.y*H,s.r,0,7);g.fill();
+    }
+
+    // orbit ellipses (full closed path, faintly tinted per planet)
+    for(const p of planets){
+      g.strokeStyle=p.col+'2e';g.lineWidth=1;
+      g.beginPath();
+      for(let k=0;k<=72;k++){
+        const pt=ellipsePoint(p,(k/72)*Math.PI*2);
+        k?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y);
+      }
+      g.stroke();
+    }
+
+    // sun at the shared focus (origin)
+    const sg=g.createRadialGradient(CX,CY,0,CX,CY,30);
+    sg.addColorStop(0,'#ffffff');sg.addColorStop(.45,'#ffd27a');sg.addColorStop(1,'rgba(255,180,80,0)');
+    g.fillStyle=sg;g.beginPath();g.arc(CX,CY,26+Math.sin(t*3)*1.6,0,7);g.fill();
+    g.fillStyle='#fff7e6';g.beginPath();g.arc(CX,CY,7,0,7);g.fill();
+
+    // planets travelling along their ellipses (variable angular speed near periapsis = livelier)
+    for(const p of planets){
+      const theta=p.ph + (t/p.T)*Math.PI*2;
+      // short comet trail
+      g.lineWidth=1.4;
+      g.beginPath();
+      for(let k=0;k<8;k++){
+        const pt=ellipsePoint(p,theta-k*0.045);
+        k?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y);
+      }
+      g.strokeStyle=p.col+'33';g.stroke();
+      const pos=ellipsePoint(p,theta);
+      g.shadowBlur=12;g.shadowColor=p.col;
+      g.fillStyle=p.col;g.beginPath();g.arc(pos.x,pos.y,p.r,0,7);g.fill();
+      g.shadowBlur=0;
+      // Saturn ring
+      if(p.name==='Saturn'){
+        g.save();g.translate(pos.x,pos.y);g.rotate(-0.5);
+        g.scale(1,0.34);
+        g.strokeStyle='rgba(232,209,138,0.55)';g.lineWidth=1.4;
+        g.beginPath();g.arc(0,0,p.r*2.1,0,7);g.stroke();
+        g.beginPath();g.arc(0,0,p.r*1.7,0,7);g.stroke();
+        g.restore();
+      }
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  raf=requestAnimationFrame(draw);
+
+  // hold the full intro (name + system + subtitle) for 5s, then fade into the page
+  setTimeout(()=>{ intro.classList.add('done'); }, 5000);
+  setTimeout(()=>{ cancelAnimationFrame(raf); }, 5800); // stop drawing after fade completes
+})();
 </script>
 </body>
 </html>
