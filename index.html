@@ -38,6 +38,7 @@ nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(
 .hero{min-height:calc(100vh - 70px);display:flex;flex-direction:column;justify-content:center;padding:60px 0}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--hot);margin-bottom:24px;text-transform:uppercase}
 .hero h1{font-size:clamp(48px,11vw,150px);font-weight:800;letter-spacing:-.045em;line-height:.88;margin-bottom:30px}
+.hero h1 .o{color:var(--hot)}
 .hero p{color:var(--dim);font-family:var(--mono);font-size:clamp(13px,1.6vw,16px);line-height:1.7;max-width:520px;margin-bottom:40px;letter-spacing:.02em}
 .cta{display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--line2);width:fit-content}
 .btn{font-family:var(--mono);font-size:12px;letter-spacing:.12em;padding:16px 30px;transition:.22s;display:inline-flex;align-items:center;gap:10px;text-transform:uppercase}
@@ -98,7 +99,7 @@ footer{border-top:1px solid var(--line);padding:40px 0}
 
 <footer><div class="wrap foot-in">
   <span>© 2026 PARKER McCALL · NC STATE MAE</span>
-  <span><a href="/projects/">PROECTS</a> · <a href="/contact/">CONTACT</a></span>
+  <span><a href="/projects/">PROJECTS</a> · <a href="/contact/">CONTACT</a></span>
 </div></footer>
 
 <script>
@@ -135,26 +136,15 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
 (function(){
   const intro=document.getElementById('intro');
   if(!intro) return;
-
-  // Decide whether to show. Show on: fresh load or refresh. Skip on: back-nav from another page.
-  // Strategy: a session flag set once the user has seen the intro this tab-session.
-  // Refresh detection via the Navigation Timing API overrides the flag (refresh always shows).
   let isReload=false;
   try{
     const nav=performance.getEntriesByType('navigation')[0];
     isReload = nav ? nav.type==='reload' : (performance.navigation && performance.navigation.type===1);
   }catch(e){}
   const seen = sessionStorage.getItem('introSeen')==='1';
-
-  if(seen && !isReload){
-    // Came back from another page in the same session -> no intro.
-    intro.remove();
-    return;
-  }
-  // We are going to play it; mark as seen for subsequent in-session navigations.
+  if(seen && !isReload){ intro.remove(); return; }
   try{ sessionStorage.setItem('introSeen','1'); }catch(e){}
-
-  document.body.classList.add('intro-lock'); // prevent scroll under intro
+  document.body.classList.add('intro-lock');
 
   const cv=document.getElementById('solar'), g=cv.getContext('2d');
   let W,H,CX,CY,SCALE,DPR,raf;
@@ -168,10 +158,8 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     SCALE=Math.min(W,H)/(portrait?2.7:2.5)*0.92;
   }
   size();addEventListener('resize',size);
-
   const starCount=Math.min(160,Math.round(innerWidth*innerHeight/9000));
   const stars=[...Array(starCount)].map(()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.3,tw:Math.random()*6}));
-
   const RAW=[
     {name:'Mercury',aAU:0.387,e:0.206,incOrb:7.0, sz:1.4, col:'#b8b3a8'},
     {name:'Venus',  aAU:0.723,e:0.007,incOrb:3.4, sz:2.7, col:'#e8c98a'},
@@ -221,7 +209,6 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     raf=requestAnimationFrame(draw);
   }
   raf=requestAnimationFrame(draw);
-
   let dismissed=false;
   function dismiss(){
     if(dismissed) return; dismissed=true;
@@ -229,7 +216,6 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     document.body.classList.remove('intro-lock');
     setTimeout(()=>{cancelAnimationFrame(raf); intro.remove();},900);
   }
-  // auto after 4s, or click/tap/key to skip
   const auto=setTimeout(dismiss,4000);
   intro.addEventListener('click',()=>{clearTimeout(auto);dismiss();});
   intro.addEventListener('touchstart',()=>{clearTimeout(auto);dismiss();},{passive:true});
