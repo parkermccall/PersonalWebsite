@@ -67,7 +67,7 @@ footer{border-top:1px solid var(--line);padding:40px 0}
   <canvas id="solar"></canvas>
   <div class="intro-title">Parker McCall</div>
   <div class="intro-sub">Aerospace Engineer</div>
-  <div class="intro-skip">CLICK ANYWHERE TO ENTER</div>
+  <div class="intro-skip">CLICK ANYWHERE TO SKIP</div>
 </div>
 
 <nav><div class="wrap nav-in">
@@ -82,7 +82,7 @@ footer{border-top:1px solid var(--line);padding:40px 0}
 <div class="wrap hero">
   <div class="eyebrow reveal">NC State · Aerospace Engineering</div>
   <h1 class="reveal">I design,<br>analyze &amp;<br>fire hardware.</h1>
-  <p class="reveal">Sophomore aerospace engineer focused on propulsion — building a bipropellant rocket engine test stand from the structural plates up to the full sensor and DAQ signal chain.</p>
+  <p class="reveal">Junior aerospace engineering student at NC State. I design bi-propellant propulsion test hardware, fly fixed/variable wing RC, and enjoy building with CAD, code, and powertools.</p>
   <div class="cta reveal">
     <a class="btn primary" href="/projects/">View work →</a>
     <a class="btn ghost" href="/contact/">Get in touch</a>
@@ -90,14 +90,15 @@ footer{border-top:1px solid var(--line);padding:40px 0}
 </div>
 
 <div class="wrap"><div class="strip reveal">
-  <div class="s"><div class="n">HTP / Jet-A</div><div class="l">Active test stand</div></div>
-  <div class="s"><div class="n">4–20 mA</div><div class="l">Instrumented DAQ</div></div>
-  <div class="s"><div class="n">First principles</div><div class="l">How I build</div></div>
+  <div class="s"><div class="n">84</div><div class="l">CAD Projects</div></div>
+  <div class="s"><div class="n">11</div><div class="l">Coding Projects</div></div>
+  <div class="s"><div class="n">4</div><div class="l">Woodworking Projects</div></div>
+  <div class="s"><div class="n"></div><div class="l">Circuitry Project</div></div>
 </div></div>
 
 <footer><div class="wrap foot-in">
   <span>© 2026 PARKER McCALL · NC STATE MAE</span>
-  <span><a href="/projects/">WORK</a> · <a href="/contact/">CONTACT</a></span>
+  <span><a href="/projects/">PROECTS</a> · <a href="/contact/">CONTACT</a></span>
 </div></footer>
 
 <script>
@@ -228,8 +229,8 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     document.body.classList.remove('intro-lock');
     setTimeout(()=>{cancelAnimationFrame(raf); intro.remove();},900);
   }
-  // auto after 5s, or click/tap/key to skip
-  const auto=setTimeout(dismiss,5000);
+  // auto after 4s, or click/tap/key to skip
+  const auto=setTimeout(dismiss,4000);
   intro.addEventListener('click',()=>{clearTimeout(auto);dismiss();});
   intro.addEventListener('touchstart',()=>{clearTimeout(auto);dismiss();},{passive:true});
   addEventListener('keydown',(e)=>{if(!dismissed){clearTimeout(auto);dismiss();}});
