@@ -3,60 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Parker</title>
+<title>Contact — Parker McCall</title>
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0c10;--panel:#0f1318;--line:#1d242d;--line2:#2a333d;--text:#e6edf3;--dim:#8b97a3;--faint:#5a6573;--accent:#ff5c2b;--accent2:#3ddc97;--grid:rgba(255,255,255,.025);--mono:'Space Mono',monospace;--sans:'Sora',sans-serif}
+:root{--bg:#070707;--panel:#0d0d0d;--panel2:#101010;--line:#1c1c1a;--line2:#2a2a27;--ink:#f5f3ee;--dim:#8c8c84;--faint:#5e5e57;--hot:#ff6b35;--cool:#48cae4;--mono:ui-monospace,'Cascadia Mono','SF Mono',Menlo,monospace;--disp:'Helvetica Neue',Arial,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);line-height:1.6;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:1180px;margin:0 auto;padding:0 32px;width:100%}
-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,12,16,.78);border-bottom:1px solid var(--line)}
-.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
-.logo{font-family:var(--mono);font-weight:700;letter-spacing:1px;font-size:15px}.logo b{color:var(--accent)}
-.nav-links{display:flex;gap:34px;font-family:var(--mono);font-size:13px}
-.nav-links a{color:var(--dim);transition:color .2s;position:relative}
-.nav-links a:hover,.nav-links a.active{color:var(--text)}
-.nav-links a.active::after{content:'';position:absolute;bottom:-6px;left:0;width:100%;height:2px;background:var(--accent)}
-.burger{display:none;font-family:var(--mono);color:var(--dim);background:none;border:1px solid var(--line2);padding:6px 12px;border-radius:6px;cursor:pointer}
+#flow{position:fixed;inset:0;z-index:-1;opacity:.7}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px;width:100%}
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(7,7,7,.7);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
+.logo{font-family:var(--mono);font-weight:700;letter-spacing:.18em;font-size:13px}
+.nav-links{display:flex;gap:30px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
+.nav-links a{color:var(--dim);transition:color .2s;position:relative;padding:4px 0}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;background:var(--hot)}
+.burger{display:none;font-family:var(--mono);color:var(--dim);background:none;border:1px solid var(--line2);padding:6px 12px;cursor:pointer;letter-spacing:.1em}
 main{flex:1;display:flex;align-items:center;padding:80px 0}
-.tag{font-family:var(--mono);font-size:12px;color:var(--accent2);letter-spacing:2px;margin-bottom:20px;display:inline-flex;align-items:center;gap:10px}
-.tag::before{content:'';width:28px;height:1px;background:var(--accent2)}
-.clayout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;width:100%}
-.cleft h1{font-size:clamp(40px,6vw,68px);font-weight:800;letter-spacing:-2px;line-height:1.04;margin-bottom:22px}
-.cleft h1 .o{color:var(--accent)}
-.cleft p{color:var(--dim);font-weight:300;font-size:18px;max-width:420px}
-.links{display:grid;gap:14px}
-.lrow{display:flex;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 26px;transition:.22s;cursor:pointer}
-.lrow:hover{border-color:var(--accent);transform:translateX(4px)}
-.lrow .lbl{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:2px;text-transform:uppercase}
-.lrow .val{font-size:17px;font-weight:600;margin-top:4px}
-.lrow .arr{font-family:var(--mono);color:var(--accent);font-size:18px;transition:.2s}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--hot);margin-bottom:22px;text-transform:uppercase}
+.clayout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;width:100%}
+.cleft h1{font-size:clamp(44px,7vw,80px);font-weight:800;letter-spacing:-.04em;line-height:.92;margin-bottom:24px}
+.cleft h1 .o{color:var(--hot)}
+.cleft p{color:var(--dim);font-family:var(--mono);font-size:14px;line-height:1.7;max-width:420px;letter-spacing:.01em}
+.links{display:grid;gap:0;border:1px solid var(--line)}
+.lrow{display:flex;align-items:center;justify-content:space-between;background:rgba(13,13,13,.7);border-bottom:1px solid var(--line);padding:24px 28px;transition:.22s;cursor:pointer}
+.lrow:last-child{border-bottom:none}
+.lrow:hover{background:var(--panel2);padding-left:34px}
+.lrow .lbl{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.2em;text-transform:uppercase}
+.lrow .val{font-family:var(--mono);font-size:15px;font-weight:700;margin-top:6px}
+.lrow .arr{font-family:var(--mono);color:var(--hot);font-size:18px;transition:.2s}
 .lrow:hover .arr{transform:translate(3px,-3px)}
-footer{border-top:1px solid var(--line);padding:40px 0}
-.foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:13px;color:var(--faint);flex-wrap:wrap;gap:16px}
-.foot-in a:hover{color:var(--accent)}
+footer{border-top:1px solid var(--line);padding:36px 0}
+.foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--faint);flex-wrap:wrap;gap:16px}
+.foot-in a:hover{color:var(--hot)}
 .reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
-@media(max-width:780px){.nav-links{display:none}.burger{display:block}.nav-links.open{display:flex;position:absolute;top:68px;left:0;right:0;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 32px;gap:18px}.clayout{grid-template-columns:1fr;gap:36px}}
+@media(max-width:780px){.wrap{padding:0 22px}.nav-links{display:none}.burger{display:block}.nav-links.open{display:flex;position:absolute;top:70px;left:0;right:0;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 22px;gap:18px}.clayout{grid-template-columns:1fr;gap:38px}}
 </style>
 </head>
 <body>
+<canvas id="flow"></canvas>
 <nav><div class="wrap nav-in">
-  <a href="/" class="logo">ParkerMcCall<b>.</b>com</a>
+  <a href="/" class="logo">PARKER McCALL</a>
   <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')">MENU</button>
   <div class="nav-links" id="nl">
-    <a href="/">/home</a><a href="/projects">/projects</a>
-    <a href="/about">/about</a><a href="/contact" class="active">/contact</a>
+    <a href="/">/home</a><a href="/projects/">/projects</a>
+    <a href="/about/">/about</a><a href="/contact/" class="active">/contact</a>
   </div>
 </div></nav>
 
 <main><div class="wrap clayout">
   <div class="cleft reveal">
-    <div class="tag">GET IN TOUCH</div>
+    <div class="eyebrow">Get in touch</div>
     <h1>Interested to<br>know <span class="o">more?</span></h1>
     <p>Open to research and/or internships, collaborations in liquid/solid rocketry, fixed wing RC, and drone development. Always open to starting a dialogue on any subject. Reach out through any of these.</p>
   </div>
@@ -77,13 +75,40 @@ footer{border-top:1px solid var(--line);padding:40px 0}
 </div></main>
 
 <footer><div class="wrap foot-in">
-  <span>© 2026 PARKER · NC STATE MAE</span>
-  <span><a href="/">HOME</a> · <a href="/projects">WORK</a></span>
+  <span>© 2026 PARKER McCALL · NC STATE MAE</span>
+  <span><a href="/">HOME</a> · <a href="/projects/">WORK</a></span>
 </div></footer>
 
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
+/* ===== Schlieren flow-field background (subtle, behind content) ===== */
+(function(){
+  const c=document.getElementById('flow'); if(!c) return;
+  const x=c.getContext('2d'); let W,H,P=[];
+  function size(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;
+    c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';
+    x.setTransform(dpr,0,0,dpr,0,0);
+  }
+  size();addEventListener('resize',size);
+  const COUNT=innerWidth<700?55:110;
+  for(let i=0;i<COUNT;i++)P.push({x:Math.random()*W,y:Math.random()*H,s:.4+Math.random()*1.5,o:.06+Math.random()*.20});
+  function noise(y){return Math.sin(y*0.012)*1.4}
+  (function frame(){
+    x.fillStyle='rgba(7,7,7,0.16)';x.fillRect(0,0,W,H);
+    for(const p of P){
+      const v=2.0*p.s+noise(p.y);
+      p.x+=v;p.y+=Math.sin((p.x+p.y)*0.004)*0.5;
+      if(p.x>W+20){p.x=-20;p.y=Math.random()*H}
+      x.strokeStyle=p.s>1.0?'rgba(255,107,53,'+p.o+')':'rgba(72,202,228,'+(p.o*.85)+')';
+      x.lineWidth=p.s;
+      x.beginPath();x.moveTo(p.x,p.y);x.lineTo(p.x-v*5,p.y-Math.sin((p.x+p.y)*0.004)*2.6);x.stroke();
+    }
+    requestAnimationFrame(frame);
+  })();
+})();
 </script>
 </body>
 </html>
