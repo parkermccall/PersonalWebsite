@@ -15,14 +15,14 @@ a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(7,7,7,.7);border-bottom:1px solid var(--line)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
 .logo{font-family:var(--mono);font-weight:700;letter-spacing:.18em;font-size:13px}
-.nav-links{display:flex;gap:30px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
+.nav-links{display:flex;gap:26px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
 .nav-links a{color:var(--dim);transition:color .2s;position:relative;padding:4px 0}
 .nav-links a:hover,.nav-links a.active{color:var(--ink)}
 .nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;background:var(--hot)}
 .burger{display:none;font-family:var(--mono);color:var(--dim);background:none;border:1px solid var(--line2);padding:6px 12px;cursor:pointer;letter-spacing:.1em}
 main{flex:1;display:flex;align-items:center;padding:80px 0}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--hot);margin-bottom:22px;text-transform:uppercase}
-.clayout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;width:100%}
+.clayout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;width:100%}
 .cleft h1{font-size:clamp(44px,7vw,80px);font-weight:800;letter-spacing:-.04em;line-height:.92;margin-bottom:24px}
 .cleft h1 .o{color:var(--hot)}
 .cleft p{color:var(--dim);font-family:var(--mono);font-size:14px;line-height:1.7;max-width:420px;letter-spacing:.01em}
@@ -34,6 +34,22 @@ main{flex:1;display:flex;align-items:center;padding:80px 0}
 .lrow .val{font-family:var(--mono);font-size:15px;font-weight:700;margin-top:6px}
 .lrow .arr{font-family:var(--mono);color:var(--hot);font-size:18px;transition:.2s}
 .lrow:hover .arr{transform:translate(3px,-3px)}
+/* ---- FORM ---- */
+.cform{border:1px solid var(--line2);background:rgba(13,13,13,.72);padding:32px}
+.cform .ftitle{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--faint);text-transform:uppercase;margin-bottom:22px}
+.field{margin-bottom:18px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:8px}
+.field input,.field textarea{width:100%;background:var(--bg);border:1px solid var(--line2);color:var(--ink);font-family:var(--mono);font-size:13px;padding:13px 14px;transition:.2s;letter-spacing:.02em;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--hot);background:#0a0a0a}
+.field textarea{min-height:120px;line-height:1.6}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.submit{width:100%;background:var(--hot);color:#070707;font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;border:none;padding:16px;cursor:pointer;transition:.2s;margin-top:4px}
+.submit:hover{background:#ff8455}
+.submit:disabled{opacity:.55;cursor:default}
+.fmsg{font-family:var(--mono);font-size:12px;letter-spacing:.04em;margin-top:16px;line-height:1.6;display:none}
+.fmsg.show{display:block}
+.fmsg.ok{color:var(--cool)}
+.fmsg.err{color:var(--hot)}
 footer{border-top:1px solid var(--line);padding:36px 0}
 .foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--faint);flex-wrap:wrap;gap:16px}
 .foot-in a:hover{color:var(--hot)}
@@ -47,8 +63,8 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <a href="/" class="logo">PARKER McCALL</a>
   <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')">MENU</button>
   <div class="nav-links" id="nl">
-    <a href="/">/home</a><a href="/projects/">/projects</a>
-    <a href="/about/">/about</a><a href="/contact/" class="active">/contact</a>
+    <a href="https://parkermccall.com">/home</a><a href="/resume/">/resume</a><a href="/projects/">/portfolio</a>
+    <a href="https://www.aerrowlabs.com">/aerrowlabs</a><a href="/contact/" class="active">/contact</a>
   </div>
 </div></nav>
 
@@ -56,21 +72,45 @@ footer{border-top:1px solid var(--line);padding:36px 0}
   <div class="cleft reveal">
     <div class="eyebrow">Get in touch</div>
     <h1>Interested to<br>know <span class="o">more?</span></h1>
-    <p>Open to research and/or internships, collaborations in liquid/solid rocketry, fixed wing RC, and drone development. Always open to starting a dialogue on any subject. Reach out through any of these.</p>
+    <p>Open to research and/or internships, collaborations in liquid/solid rocketry, fixed wing RC, and drone development. Always open to starting a dialogue on any subject. Fill out the form, or reach me directly below.</p>
+    <div class="links" style="margin-top:32px">
+      <a class="lrow" href="mailto:ParkerMccall@AerrowLabs.com">
+        <div><div class="lbl">Email</div><div class="val">ParkerMccall@AerrowLabs.com</div></div>
+        <span class="arr">↗</span>
+      </a>
+      <a class="lrow" href="https://linkedin.com/in/parker-mccall">
+        <div><div class="lbl">LinkedIn</div><div class="val">linkedin.com/in/parker-mccall</div></div>
+        <span class="arr">↗</span>
+      </a>
+      <a class="lrow" href="#">
+        <div><div class="lbl">Location</div><div class="val">Raleigh, NC</div></div>
+        <span class="arr">↗</span>
+      </a>
+    </div>
   </div>
-  <div class="links">
-    <a class="lrow reveal" href="mailto:ParkerMccall@AerrowLabs.com">
-      <div><div class="lbl">Email</div><div class="val">ParkerMccall@AerrowLabs.com</div></div>
-      <span class="arr">↗</span>
-    </a>
-    <a class="lrow reveal" href="https://linkedin.com/in/parker-mccall">
-      <div><div class="lbl">LinkedIn</div><div class="val">linkedin.com/in/parker-mccall</div></div>
-      <span class="arr">↗</span>
-    </a>
-    <a class="lrow reveal" href="#">
-      <div><div class="lbl">Location</div><div class="val">Raleigh, NC</div></div>
-      <span class="arr">↗</span>
-    </a>
+
+  <div class="cform reveal">
+    <div class="ftitle">// Send a message</div>
+    <div class="frow">
+      <div class="field">
+        <label for="cf-name">Name</label>
+        <input id="cf-name" name="name" type="text" placeholder="Your name" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="cf-email">Email</label>
+        <input id="cf-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+    </div>
+    <div class="field">
+      <label for="cf-subject">Subject</label>
+      <input id="cf-subject" name="subject" type="text" placeholder="What's this about?">
+    </div>
+    <div class="field">
+      <label for="cf-message">Message</label>
+      <textarea id="cf-message" name="message" placeholder="Write your message…" required></textarea>
+    </div>
+    <button class="submit" id="cf-submit" onclick="sendMessage()">Send message →</button>
+    <div class="fmsg" id="cf-msg"></div>
   </div>
 </div></main>
 
@@ -80,6 +120,61 @@ footer{border-top:1px solid var(--line);padding:36px 0}
 </div></footer>
 
 <script>
+/* ===== Contact form submission =====
+   To receive submissions in your inbox, create a free form at https://formspree.io
+   and paste your endpoint URL below (looks like https://formspree.io/f/abcdwxyz).
+   While it's left blank, the form falls back to opening the visitor's email client. */
+const FORMSPREE_ENDPOINT = ""; // <-- paste your Formspree URL here
+
+async function sendMessage(){
+  const name=document.getElementById('cf-name').value.trim();
+  const email=document.getElementById('cf-email').value.trim();
+  const subject=document.getElementById('cf-subject').value.trim();
+  const message=document.getElementById('cf-message').value.trim();
+  const btn=document.getElementById('cf-submit');
+  const msg=document.getElementById('cf-msg');
+  msg.className='fmsg';
+
+  if(!name||!email||!message){
+    msg.textContent='// Please fill in your name, email, and message.';
+    msg.classList.add('show','err'); return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    msg.textContent='// That email address doesn\u2019t look right.';
+    msg.classList.add('show','err'); return;
+  }
+
+  // Fallback: no endpoint configured -> open mail client
+  if(!FORMSPREE_ENDPOINT){
+    const body=`Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0A${encodeURIComponent(message)}`;
+    const subj=encodeURIComponent(subject||`Website message from ${name}`);
+    window.location.href=`mailto:ParkerMccall@AerrowLabs.com?subject=${subj}&body=${body}`;
+    msg.textContent='// Opening your email app\u2026';
+    msg.classList.add('show','ok'); return;
+  }
+
+  btn.disabled=true; btn.textContent='Sending\u2026';
+  try{
+    const res=await fetch(FORMSPREE_ENDPOINT,{
+      method:'POST',
+      headers:{'Accept':'application/json'},
+      body:(()=>{const fd=new FormData();fd.append('name',name);fd.append('email',email);fd.append('subject',subject);fd.append('message',message);return fd;})()
+    });
+    if(res.ok){
+      msg.textContent='// Message sent \u2014 thanks, I\u2019ll get back to you soon.';
+      msg.classList.add('show','ok');
+      ['cf-name','cf-email','cf-subject','cf-message'].forEach(id=>document.getElementById(id).value='');
+    }else{
+      throw new Error('bad status');
+    }
+  }catch(e){
+    msg.textContent='// Something went wrong sending. Email me directly at ParkerMccall@AerrowLabs.com.';
+    msg.classList.add('show','err');
+  }finally{
+    btn.disabled=false; btn.textContent='Send message \u2192';
+  }
+}
+
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
 /* ===== Schlieren flow-field background (subtle, behind content) ===== */
