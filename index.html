@@ -31,21 +31,27 @@ nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(
 .nav-links{display:flex;gap:26px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
 .nav-links a{color:var(--dim);transition:color .2s;position:relative;padding:4px 0}
 .nav-links a:hover,.nav-links a.active{color:var(--ink)}
-.nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;background:var(--hot)}
+.nav-links a:hover::after,.nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;background:var(--hot)}
 .burger{display:none;font-family:var(--mono);color:var(--dim);background:none;border:1px solid var(--line2);padding:6px 12px;cursor:pointer;letter-spacing:.1em}
 
-/* ---- HERO ---- */
-.hero{min-height:calc(100vh - 70px);display:flex;flex-direction:column;justify-content:center;padding:60px 0}
+/* ---- HERO (2-col with photo) ---- */
+.hero{min-height:calc(100vh - 70px);display:grid;grid-template-columns:1fr 270px;gap:56px;align-items:center;padding:60px 0}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--hot);margin-bottom:24px;text-transform:uppercase}
-.hero h1{font-size:clamp(48px,11vw,150px);font-weight:800;letter-spacing:-.045em;line-height:.88;margin-bottom:30px}
+.hero h1{font-size:clamp(48px,9vw,130px);font-weight:800;letter-spacing:-.045em;line-height:.88;margin-bottom:30px}
 .hero h1 .o{color:var(--hot)}
-.hero p{color:var(--dim);font-family:var(--mono);font-size:clamp(13px,1.6vw,16px);line-height:1.7;max-width:520px;margin-bottom:40px;letter-spacing:.02em}
+.hero p{color:var(--dim);font-family:var(--mono);font-size:clamp(13px,1.4vw,15px);line-height:1.7;max-width:520px;margin-bottom:40px;letter-spacing:.02em}
 .cta{display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--line2);width:fit-content}
 .btn{font-family:var(--mono);font-size:12px;letter-spacing:.12em;padding:16px 30px;transition:.22s;display:inline-flex;align-items:center;gap:10px;text-transform:uppercase}
 .btn.primary{background:var(--hot);color:#070707;font-weight:700}
 .btn.primary:hover{background:#ff8455}
 .btn.ghost{color:var(--ink);border-left:1px solid var(--line2)}
 .btn.ghost:hover{background:var(--panel2);color:var(--hot)}
+
+/* PROFESSIONAL PHOTO — replace .hero-photo-ph with <img src="..." alt="Parker McCall"> */
+.hero-photo{width:100%;aspect-ratio:3/4;border:1px solid var(--line2);background:var(--panel);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.hero-photo-ph{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--faint);font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-align:center;padding:24px}
+.hero-photo-ph svg{opacity:.12}
 
 /* ---- STAT STRIP ---- */
 .strip{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:70px;background:rgba(7,7,7,.55)}
@@ -54,11 +60,69 @@ nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(
 .strip .s .n{font-size:22px;font-weight:700;letter-spacing:-.01em}
 .strip .s .l{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.16em;text-transform:uppercase;margin-top:8px}
 
+/* ---- SLIDESHOW ---- */
+.ss-section{padding:80px 0;border-top:1px solid var(--line)}
+.sec-label{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--hot);text-transform:uppercase;margin-bottom:10px}
+.sec-title{font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-.035em;margin-bottom:36px}
+.ss-wrap{position:relative;border:1px solid var(--line);background:var(--panel);user-select:none}
+.ss-img-area{position:relative;aspect-ratio:16/9;background:var(--panel2);overflow:hidden;cursor:pointer}
+.ss-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;pointer-events:none}
+.ss-ph-num{font-family:var(--mono);font-size:clamp(80px,16vw,160px);font-weight:800;letter-spacing:-.05em;opacity:.04;line-height:1;position:absolute;bottom:-10px;right:20px;color:var(--ink)}
+.ss-ph-tag{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--faint);text-transform:uppercase;position:relative;z-index:1}
+.ss-ph-name{font-size:clamp(16px,2.4vw,24px);font-weight:700;letter-spacing:-.01em;text-align:center;padding:0 80px;position:relative;z-index:1;max-width:640px}
+.ss-real-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.ss-real-img.show{display:block}
+.ss-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(7,7,7,.78);border:1px solid var(--line2);color:var(--ink);width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:var(--mono);font-size:18px;transition:.2s;line-height:1}
+.ss-arrow:hover{background:var(--hot);border-color:var(--hot);color:#070707}
+.ss-arrow.prev{left:16px}
+.ss-arrow.next{right:16px}
+.ss-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-top:1px solid var(--line)}
+.ss-name-label{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.04em;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ss-dots{display:flex;gap:7px;flex-shrink:0;margin-left:16px}
+.ss-dot{width:6px;height:6px;border-radius:50%;background:var(--line2);cursor:pointer;transition:.2s}
+.ss-dot.on{background:var(--hot)}
+.ss-overlay{position:absolute;inset:0;background:rgba(7,7,7,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;visibility:hidden;transition:.3s;z-index:5;padding:40px;text-align:center}
+.ss-overlay.show{opacity:1;visibility:visible}
+.ss-ov-proj{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--hot);text-transform:uppercase}
+.ss-ov-title{font-size:clamp(18px,2.8vw,30px);font-weight:800;letter-spacing:-.02em;max-width:520px;line-height:1.1}
+.ss-ov-item{font-family:var(--mono);font-size:13px;color:var(--dim);letter-spacing:.04em}
+.ss-ov-btn{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:var(--hot);color:#070707;font-weight:700;padding:14px 28px;margin-top:10px;transition:.2s;display:inline-block}
+.ss-ov-btn:hover{background:#ff8455}
+.ss-ov-close{position:absolute;top:14px;right:18px;font-family:var(--mono);font-size:20px;color:var(--dim);cursor:pointer;line-height:1;padding:4px;transition:.2s}
+.ss-ov-close:hover{color:var(--ink)}
+.ss-hint{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.18em;text-transform:uppercase;text-align:center;padding:12px 0 0;opacity:.7}
+
+/* ---- TIMELINE ---- */
+.tl-section{padding:80px 0 100px;border-top:1px solid var(--line)}
+.tl-list{position:relative}
+.tl-list::before{content:'';position:absolute;left:120px;top:0;bottom:0;width:1px;background:var(--line2)}
+.tl-entry{display:grid;grid-template-columns:120px 1fr;gap:0;border-bottom:1px solid var(--line)}
+.tl-entry:first-child{border-top:1px solid var(--line)}
+.tl-left{padding:44px 32px 44px 0;position:relative}
+.tl-left::after{content:'';position:absolute;right:-5px;top:50px;width:9px;height:9px;border-radius:50%;background:var(--hot);box-shadow:0 0 10px rgba(255,107,53,.45)}
+.tl-year{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--hot);letter-spacing:.02em;line-height:1}
+.tl-loc{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.12em;text-transform:uppercase;margin-top:8px;line-height:1.6}
+.tl-right{padding:44px 0 44px 48px}
+.tl-title{font-size:clamp(18px,2.2vw,22px);font-weight:700;letter-spacing:-.01em;margin-bottom:22px}
+/* replace <span> inside .tl-img with <img src="..." alt="..."> when ready */
+.tl-img{width:100%;max-width:500px;aspect-ratio:16/9;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px;position:relative;overflow:hidden}
+.tl-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.tl-desc{color:var(--dim);font-family:var(--mono);font-size:13px;line-height:1.8;max-width:540px;letter-spacing:.01em}
+
 footer{border-top:1px solid var(--line);padding:40px 0}
 .foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--faint);flex-wrap:wrap;gap:16px}
 .foot-in a:hover{color:var(--hot)}
 .reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
-@media(max-width:780px){.wrap{padding:0 22px}.nav-links{display:none}.burger{display:block}.nav-links.open{display:flex;position:absolute;top:70px;left:0;right:0;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 22px;gap:18px}.strip{flex-direction:column}.strip .s{border-right:none;border-bottom:1px solid var(--line)}.strip .s:last-child{border-bottom:none}.cta{width:100%}.btn{flex:1;justify-content:center}}
+
+@media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto;padding:60px 0 40px;gap:36px}.hero-photo{aspect-ratio:3/2;max-width:340px}}
+@media(max-width:780px){
+  .wrap{padding:0 22px}.nav-links{display:none}.burger{display:block}
+  .nav-links.open{display:flex;position:absolute;top:70px;left:0;right:0;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 22px;gap:18px}
+  .strip{flex-direction:column}.strip .s{border-right:none;border-bottom:1px solid var(--line)}.strip .s:last-child{border-bottom:none}
+  .cta{width:100%}.btn{flex:1;justify-content:center}
+  .tl-list::before{left:76px}.tl-entry{grid-template-columns:76px 1fr}
+  .tl-right{padding-left:28px}.tl-left::after{right:-5px}
+}
 </style>
 </head>
 <body>
@@ -75,20 +139,34 @@ footer{border-top:1px solid var(--line);padding:40px 0}
   <a href="/" class="logo">PARKER McCALL</a>
   <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')">MENU</button>
   <div class="nav-links" id="nl">
-    <a href="https://parkermccall.com" class="active">/home</a><a href="/resume/">/resume</a><a href="/projects/">/portfolio</a><a href="/about/">/about</a><a href="/contact/">/contact</a>
+    <a href="https://parkermccall.com" class="active">/home</a><a href="/resume/">/resume</a><a href="/portfolio/">/portfolio</a><a href="/about/">/about</a><a href="/contact/">/contact</a>
   </div>
 </div></nav>
 
-<div class="wrap hero">
-  <div class="eyebrow reveal">NC State · Aerospace Engineering</div>
-  <h1 class="reveal">Engineering <span class="o">Innovation.</span></h1>
-  <p class="reveal">United States Air Force Veteran (E-5), Aerospace Engineering student, and Maker. I work as a Propulsion Engineer at NC State's Liquid Rocketry Lab, 
-    where I design and manufacture bi-propellant propulsion hardware. My interests span across aerospace design, CAD, coding, fabrication, and prototyping. From rocket systems and 
-    custom RC aircraft to metalworking, woodworking, and 3D printing, I enjoy solving problems by designing, building, and testing real-world engineering solutions.</p>
-  <div class="cta reveal">
-    <a class="btn primary" href="/projects/">Check out what im working on →</a>
-    <a class="btn ghost" href="/contact/">Get in touch</a>
+<div class="wrap">
+<div class="hero">
+  <div class="hero-text">
+    <div class="eyebrow reveal">NC State · Aerospace Engineering</div>
+    <h1 class="reveal">Engineering <span class="o">Innovation.</span></h1>
+    <p class="reveal">United States Air Force Veteran (E-5), Aerospace Engineering student, and Maker. I work as a Propulsion Engineer at NC State's Liquid Rocketry Lab, where I design and manufacture bi-propellant propulsion hardware. My interests span across aerospace design, CAD, coding, fabrication, and prototyping. From rocket systems and custom RC aircraft to metalworking, woodworking, and 3D printing, I enjoy solving problems by designing, building, and testing real-world engineering solutions.</p>
+    <div class="cta reveal">
+      <a class="btn primary" href="/portfolio/">Check out what I'm working on →</a>
+      <a class="btn ghost" href="/contact/">Get in touch</a>
+    </div>
   </div>
+
+  <!--
+    PROFESSIONAL PHOTO
+    Replace the .hero-photo-ph div with your headshot:
+      <img src="/assets/parker-headshot.jpg" alt="Parker McCall">
+  -->
+  <div class="hero-photo reveal">
+    <div class="hero-photo-ph">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#5e5e57" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span>Add professional<br>photo here</span>
+    </div>
+  </div>
+</div>
 </div>
 
 <div class="wrap"><div class="strip reveal">
@@ -98,129 +176,242 @@ footer{border-top:1px solid var(--line);padding:40px 0}
   <div class="s"><div class="n">1</div><div class="l">Circuitry Project</div></div>
 </div></div>
 
+<!--
+  PROJECT SLIDESHOW
+  Add real images: place <img id="ss-img-0" class="ss-real-img" src="..." alt="..."> etc. inside .ss-img-area
+  One per slide (0–3). JS will auto-show/hide them.
+-->
+<div class="wrap ss-section reveal">
+  <div class="sec-label">// Project Highlights</div>
+  <div class="sec-title">Selected Work</div>
+  <div class="ss-wrap">
+    <div class="ss-img-area" id="ss-img-area">
+      <div class="ss-ph" id="ss-ph">
+        <div class="ss-ph-num" id="ss-ph-num">01</div>
+        <div class="ss-ph-tag">Click to view project details</div>
+        <div class="ss-ph-name" id="ss-ph-name">HTP / Jet-A Bipropellant Test Stand</div>
+      </div>
+      <!-- insert real slide images here (id="ss-img-0" through "ss-img-3") -->
+
+      <div class="ss-overlay" id="ss-overlay">
+        <span class="ss-ov-close" id="ss-ov-close">✕</span>
+        <div class="ss-ov-proj" id="ss-ov-proj">PROJECT 01</div>
+        <div class="ss-ov-title" id="ss-ov-title">HTP / Jet-A Bipropellant Test Stand</div>
+        <div class="ss-ov-item" id="ss-ov-item">Bipropellant test hardware</div>
+        <a class="ss-ov-btn" id="ss-ov-btn" href="/portfolio/1/">View Project →</a>
+      </div>
+
+      <button class="ss-arrow prev" id="ss-prev" aria-label="Previous">←</button>
+      <button class="ss-arrow next" id="ss-next" aria-label="Next">→</button>
+    </div>
+    <div class="ss-bar">
+      <div class="ss-name-label" id="ss-name-label">HTP / Jet-A Bipropellant Test Stand</div>
+      <div class="ss-dots" id="ss-dots"></div>
+    </div>
+  </div>
+  <div class="ss-hint">← → arrow keys or buttons to browse · click image for details</div>
+</div>
+
+<!--
+  HISTORY TIMELINE — newest → oldest (top → bottom)
+  Replace <span> inside .tl-img with <img src="..." alt="..."> for real photos.
+  Copy any .tl-entry block to add more entries.
+-->
+<div class="wrap tl-section">
+  <div class="sec-label reveal">// History</div>
+  <div class="sec-title reveal">Background</div>
+  <div class="tl-list">
+
+    <!-- ENTRY 1 — Most Recent -->
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <div class="tl-year">20XX</div>
+        <div class="tl-loc">City,<br>State</div>
+      </div>
+      <div class="tl-right">
+        <div class="tl-title">Job Title — Organization</div>
+        <div class="tl-img"><span>Add image here</span></div>
+        <div class="tl-desc">[Add a brief description of your role, what you worked on, and key accomplishments during this time.]</div>
+      </div>
+    </div>
+
+    <!-- ENTRY 2 -->
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <div class="tl-year">20XX</div>
+        <div class="tl-loc">City,<br>State</div>
+      </div>
+      <div class="tl-right">
+        <div class="tl-title">Job Title — Organization</div>
+        <div class="tl-img"><span>Add image here</span></div>
+        <div class="tl-desc">[Add a brief description of this role or time period here.]</div>
+      </div>
+    </div>
+
+    <!-- ENTRY 3 -->
+    <div class="tl-entry reveal">
+      <div class="tl-left">
+        <div class="tl-year">20XX</div>
+        <div class="tl-loc">City,<br>State</div>
+      </div>
+      <div class="tl-right">
+        <div class="tl-title">Job Title — Organization</div>
+        <div class="tl-img"><span>Add image here</span></div>
+        <div class="tl-desc">[Add a brief description of this role or time period here.]</div>
+      </div>
+    </div>
+
+    <!-- Copy a .tl-entry block above to add more entries. Newest at top. -->
+
+  </div>
+</div>
+
 <footer><div class="wrap foot-in">
   <span>© 2026 PARKER McCALL · NC STATE MAE</span>
-  <span><a href="/projects/">PROJECTS</a> · <a href="/contact/">CONTACT</a></span>
+  <span><a href="/portfolio/">PORTFOLIO</a> · <a href="/contact/">CONTACT</a></span>
 </div></footer>
 
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*70)+'ms';io.observe(el)});
-/* ===== Schlieren flow-field background (subtle, behind content) ===== */
+
+/* ===== PROJECT SLIDESHOW ===== */
+(function(){
+  const slides=[
+    {num:'01',project:'HTP / Jet-A Bipropellant Test Stand',item:'Bipropellant test hardware',url:'/portfolio/1/'},
+    {num:'02',project:'Long-Range Variable-Wing UAV',item:'Innovative flex-wing aircraft',url:'/portfolio/2/'},
+    {num:'03',project:'Shop & Fabrication Projects',item:'Workshop builds & prototypes',url:'/portfolio/3/'},
+    {num:'04',project:'Lexadex — Roguelike Language Learning',item:'Cross-platform language game',url:'/portfolio/4/'},
+  ];
+  let cur=0,timer,overlayOpen=false;
+  const area=document.getElementById('ss-img-area');
+  const overlay=document.getElementById('ss-overlay');
+  const ph=document.getElementById('ss-ph');
+  const phNum=document.getElementById('ss-ph-num');
+  const phName=document.getElementById('ss-ph-name');
+  const nameLabel=document.getElementById('ss-name-label');
+  const projEl=document.getElementById('ss-ov-proj');
+  const titleEl=document.getElementById('ss-ov-title');
+  const itemEl=document.getElementById('ss-ov-item');
+  const ovBtn=document.getElementById('ss-ov-btn');
+  const closeEl=document.getElementById('ss-ov-close');
+  const dotsEl=document.getElementById('ss-dots');
+
+  slides.forEach((_,i)=>{
+    const d=document.createElement('span');
+    d.className='ss-dot'+(i===0?' on':'');
+    d.addEventListener('click',e=>{e.stopPropagation();show(i);});
+    dotsEl.appendChild(d);
+  });
+
+  function show(idx){
+    cur=(idx+slides.length)%slides.length;
+    const s=slides[cur];
+    phNum.textContent=s.num;
+    phName.textContent=s.project;
+    nameLabel.textContent=s.project;
+    document.querySelectorAll('.ss-dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+    const imgs=document.querySelectorAll('.ss-real-img');
+    imgs.forEach((img,i)=>img.classList.toggle('show',i===cur));
+    ph.style.visibility=document.querySelector('.ss-real-img')?'hidden':'visible';
+    if(overlayOpen)closeOverlay(false);
+    resetTimer();
+  }
+
+  function openOverlay(){
+    const s=slides[cur];
+    projEl.textContent='PROJECT '+s.num;
+    titleEl.textContent=s.project;
+    itemEl.textContent=s.item;
+    ovBtn.href=s.url;
+    overlay.classList.add('show');
+    overlayOpen=true;
+    clearInterval(timer);
+  }
+
+  function closeOverlay(restart=true){
+    overlay.classList.remove('show');
+    overlayOpen=false;
+    if(restart)resetTimer();
+  }
+
+  function resetTimer(){clearInterval(timer);timer=setInterval(()=>show(cur+1),5000);}
+
+  area.addEventListener('click',e=>{
+    if(closeEl.contains(e.target)||ovBtn.contains(e.target)||
+       document.getElementById('ss-prev').contains(e.target)||
+       document.getElementById('ss-next').contains(e.target))return;
+    overlayOpen?closeOverlay():openOverlay();
+  });
+  closeEl.addEventListener('click',e=>{e.stopPropagation();closeOverlay();});
+  document.getElementById('ss-prev').addEventListener('click',e=>{e.stopPropagation();show(cur-1);});
+  document.getElementById('ss-next').addEventListener('click',e=>{e.stopPropagation();show(cur+1);});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowLeft')show(cur-1);
+    else if(e.key==='ArrowRight')show(cur+1);
+    else if(e.key==='Escape'&&overlayOpen)closeOverlay();
+  });
+
+  show(0);
+})();
+
+/* ===== Schlieren flow-field background ===== */
 (function(){
   const c=document.getElementById('flow'); if(!c) return;
   const x=c.getContext('2d'); let W,H,P=[];
-  function size(){
-    const dpr=Math.min(window.devicePixelRatio||1,2);
-    W=innerWidth;H=innerHeight;
-    c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';
-    x.setTransform(dpr,0,0,dpr,0,0);
-  }
+  function size(){const dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';x.setTransform(dpr,0,0,dpr,0,0);}
   size();addEventListener('resize',size);
   const COUNT=innerWidth<700?55:110;
   for(let i=0;i<COUNT;i++)P.push({x:Math.random()*W,y:Math.random()*H,s:.4+Math.random()*1.5,o:.06+Math.random()*.20});
   function noise(y){return Math.sin(y*0.012)*1.4}
   (function frame(){
     x.fillStyle='rgba(7,7,7,0.16)';x.fillRect(0,0,W,H);
-    for(const p of P){
-      const v=2.0*p.s+noise(p.y);
-      p.x+=v;p.y+=Math.sin((p.x+p.y)*0.004)*0.5;
+    for(const p of P){const v=2.0*p.s+noise(p.y);p.x+=v;p.y+=Math.sin((p.x+p.y)*0.004)*0.5;
       if(p.x>W+20){p.x=-20;p.y=Math.random()*H}
       x.strokeStyle=p.s>1.0?'rgba(255,107,53,'+p.o+')':'rgba(72,202,228,'+(p.o*.85)+')';
-      x.lineWidth=p.s;
-      x.beginPath();x.moveTo(p.x,p.y);x.lineTo(p.x-v*5,p.y-Math.sin((p.x+p.y)*0.004)*2.6);x.stroke();
-    }
+      x.lineWidth=p.s;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(p.x-v*5,p.y-Math.sin((p.x+p.y)*0.004)*2.6);x.stroke();}
     requestAnimationFrame(frame);
   })();
 })();
-/* ===== Solar-system intro — home page only, first-visit/refresh only, click-to-skip ===== */
-(function(){
-  const intro=document.getElementById('intro');
-  if(!intro) return;
-  let isReload=false;
-  try{
-    const nav=performance.getEntriesByType('navigation')[0];
-    isReload = nav ? nav.type==='reload' : (performance.navigation && performance.navigation.type===1);
-  }catch(e){}
-  const seen = sessionStorage.getItem('introSeen')==='1';
-  if(seen && !isReload){ intro.remove(); return; }
-  try{ sessionStorage.setItem('introSeen','1'); }catch(e){}
-  document.body.classList.add('intro-lock');
 
-  const cv=document.getElementById('solar'), g=cv.getContext('2d');
+/* ===== Solar-system intro ===== */
+(function(){
+  const intro=document.getElementById('intro'); if(!intro)return;
+  let isReload=false;
+  try{const nav=performance.getEntriesByType('navigation')[0];isReload=nav?nav.type==='reload':(performance.navigation&&performance.navigation.type===1);}catch(e){}
+  const seen=sessionStorage.getItem('introSeen')==='1';
+  if(seen&&!isReload){intro.remove();return;}
+  try{sessionStorage.setItem('introSeen','1');}catch(e){}
+  document.body.classList.add('intro-lock');
+  const cv=document.getElementById('solar'),g=cv.getContext('2d');
   let W,H,CX,CY,SCALE,DPR,raf;
-  function size(){
-    DPR=Math.min(window.devicePixelRatio||1,2);
-    W=innerWidth;H=innerHeight;
-    cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';
-    g.setTransform(DPR,0,0,DPR,0,0);
-    CX=W/2;CY=H/2;
-    const portrait=H>W;
-    SCALE=Math.min(W,H)/(portrait?2.7:2.5)*0.92;
-  }
+  function size(){DPR=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';g.setTransform(DPR,0,0,DPR,0,0);CX=W/2;CY=H/2;SCALE=Math.min(W,H)/(H>W?2.7:2.5)*0.92;}
   size();addEventListener('resize',size);
   const starCount=Math.min(160,Math.round(innerWidth*innerHeight/9000));
   const stars=[...Array(starCount)].map(()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.3,tw:Math.random()*6}));
-  const RAW=[
-    {name:'Mercury',aAU:0.387,e:0.206,incOrb:7.0, sz:1.4, col:'#b8b3a8'},
-    {name:'Venus',  aAU:0.723,e:0.007,incOrb:3.4, sz:2.7, col:'#e8c98a'},
-    {name:'Earth',  aAU:1.000,e:0.017,incOrb:0.0, sz:2.8, col:'#5fa8e0'},
-    {name:'Mars',   aAU:1.524,e:0.093,incOrb:1.85,sz:1.9, col:'#d8633b'},
-    {name:'Jupiter',aAU:5.203,e:0.049,incOrb:1.30,sz:6.6, col:'#d8a878'},
-    {name:'Saturn', aAU:9.537,e:0.057,incOrb:2.49,sz:5.6, col:'#e8d18a'},
-    {name:'Uranus', aAU:19.19,e:0.046,incOrb:0.77,sz:4.0, col:'#9fe0e0'},
-    {name:'Neptune',aAU:30.07,e:0.011,incOrb:1.77,sz:3.9, col:'#5a78d6'}
-  ];
-  const DIST_COMP=0.62, aMax=Math.pow(RAW[RAW.length-1].aAU,DIST_COMP), GLOBAL_TILT=0.42;
-  const planets=RAW.map((p,i)=>{
-    const aN=Math.pow(p.aAU,DIST_COMP)/aMax;
-    return {name:p.name,a:aN,e:p.e,inc:GLOBAL_TILT*(1-p.incOrb/40),
-      w:(p.incOrb*0.13)+i*0.7,T:Math.pow(p.aAU,1.5)*1.7+2.4,ph:i*1.05,r:p.sz,col:p.col};
-  });
-  function ellipsePoint(p,theta){
-    const a=p.a*SCALE,b=a*Math.sqrt(1-p.e*p.e);
-    let ex=a*Math.cos(theta),ey=b*Math.sin(theta);
-    ex-=a*p.e;
-    const rx=ex*Math.cos(p.w)-ey*Math.sin(p.w), ry=ex*Math.sin(p.w)+ey*Math.cos(p.w);
-    return {x:CX+rx,y:CY+ry*p.inc};
-  }
+  const RAW=[{name:'Mercury',aAU:0.387,e:0.206,incOrb:7.0,sz:1.4,col:'#b8b3a8'},{name:'Venus',aAU:0.723,e:0.007,incOrb:3.4,sz:2.7,col:'#e8c98a'},{name:'Earth',aAU:1.000,e:0.017,incOrb:0.0,sz:2.8,col:'#5fa8e0'},{name:'Mars',aAU:1.524,e:0.093,incOrb:1.85,sz:1.9,col:'#d8633b'},{name:'Jupiter',aAU:5.203,e:0.049,incOrb:1.30,sz:6.6,col:'#d8a878'},{name:'Saturn',aAU:9.537,e:0.057,incOrb:2.49,sz:5.6,col:'#e8d18a'},{name:'Uranus',aAU:19.19,e:0.046,incOrb:0.77,sz:4.0,col:'#9fe0e0'},{name:'Neptune',aAU:30.07,e:0.011,incOrb:1.77,sz:3.9,col:'#5a78d6'}];
+  const DIST_COMP=0.62,aMax=Math.pow(RAW[RAW.length-1].aAU,DIST_COMP),GLOBAL_TILT=0.42;
+  const planets=RAW.map((p,i)=>{const aN=Math.pow(p.aAU,DIST_COMP)/aMax;return{name:p.name,a:aN,e:p.e,inc:GLOBAL_TILT*(1-p.incOrb/40),w:(p.incOrb*0.13)+i*0.7,T:Math.pow(p.aAU,1.5)*1.7+2.4,ph:i*1.05,r:p.sz,col:p.col};});
+  function ep(p,th){const a=p.a*SCALE,b=a*Math.sqrt(1-p.e*p.e);let ex=a*Math.cos(th)-a*p.e,ey=b*Math.sin(th);const rx=ex*Math.cos(p.w)-ey*Math.sin(p.w),ry=ex*Math.sin(p.w)+ey*Math.cos(p.w);return{x:CX+rx,y:CY+ry*p.inc};}
   const t0=performance.now();
-  function draw(now){
-    const t=(now-t0)/1000;
-    g.clearRect(0,0,W,H);
-    for(const s of stars){const al=0.35+0.5*Math.sin(t*2+s.tw);
-      g.fillStyle='rgba(245,243,238,'+(al*0.7)+')';g.beginPath();g.arc(s.x*W,s.y*H,s.r,0,7);g.fill();}
-    for(const p of planets){g.strokeStyle=p.col+'2e';g.lineWidth=1;g.beginPath();
-      for(let k=0;k<=72;k++){const pt=ellipsePoint(p,(k/72)*Math.PI*2);k?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y);}g.stroke();}
-    const sg=g.createRadialGradient(CX,CY,0,CX,CY,30);
-    sg.addColorStop(0,'#ffffff');sg.addColorStop(.45,'#ffd27a');sg.addColorStop(1,'rgba(255,180,80,0)');
-    g.fillStyle=sg;g.beginPath();g.arc(CX,CY,26+Math.sin(t*3)*1.6,0,7);g.fill();
-    g.fillStyle='#fff7e6';g.beginPath();g.arc(CX,CY,7,0,7);g.fill();
-    for(const p of planets){
-      const theta=p.ph+(t/p.T)*Math.PI*2;
-      g.lineWidth=1.4;g.beginPath();
-      for(let k=0;k<8;k++){const pt=ellipsePoint(p,theta-k*0.045);k?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y);}
-      g.strokeStyle=p.col+'33';g.stroke();
-      const pos=ellipsePoint(p,theta);
+  function draw(now){const t=(now-t0)/1000;g.clearRect(0,0,W,H);
+    for(const s of stars){const al=0.35+0.5*Math.sin(t*2+s.tw);g.fillStyle='rgba(245,243,238,'+(al*0.7)+')';g.beginPath();g.arc(s.x*W,s.y*H,s.r,0,7);g.fill();}
+    for(const p of planets){g.strokeStyle=p.col+'2e';g.lineWidth=1;g.beginPath();for(let k=0;k<=72;k++){const pt=ep(p,(k/72)*Math.PI*2);k?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y);}g.stroke();}
+    const sg=g.createRadialGradient(CX,CY,0,CX,CY,30);sg.addColorStop(0,'#ffffff');sg.addColorStop(.45,'#ffd27a');sg.addColorStop(1,'rgba(255,180,80,0)');
+    g.fillStyle=sg;g.beginPath();g.arc(CX,CY,26+Math.sin(t*3)*1.6,0,7);g.fill();g.fillStyle='#fff7e6';g.beginPath();g.arc(CX,CY,7,0,7);g.fill();
+    for(const p of planets){const th=p.ph+(t/p.T)*Math.PI*2;g.lineWidth=1.4;g.beginPath();
+      for(let k=0;k<8;k++){const pt=ep(p,th-k*0.045);k?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y);}
+      g.strokeStyle=p.col+'33';g.stroke();const pos=ep(p,th);
       g.shadowBlur=12;g.shadowColor=p.col;g.fillStyle=p.col;g.beginPath();g.arc(pos.x,pos.y,p.r,0,7);g.fill();g.shadowBlur=0;
-      if(p.name==='Saturn'){g.save();g.translate(pos.x,pos.y);g.rotate(-0.5);g.scale(1,0.34);
-        g.strokeStyle='rgba(232,209,138,0.55)';g.lineWidth=1.4;
-        g.beginPath();g.arc(0,0,p.r*2.1,0,7);g.stroke();g.beginPath();g.arc(0,0,p.r*1.7,0,7);g.stroke();g.restore();}
-    }
-    raf=requestAnimationFrame(draw);
-  }
+      if(p.name==='Saturn'){g.save();g.translate(pos.x,pos.y);g.rotate(-0.5);g.scale(1,0.34);g.strokeStyle='rgba(232,209,138,0.55)';g.lineWidth=1.4;g.beginPath();g.arc(0,0,p.r*2.1,0,7);g.stroke();g.beginPath();g.arc(0,0,p.r*1.7,0,7);g.stroke();g.restore();}}
+    raf=requestAnimationFrame(draw);}
   raf=requestAnimationFrame(draw);
   let dismissed=false;
-  function dismiss(){
-    if(dismissed) return; dismissed=true;
-    intro.classList.add('done');
-    document.body.classList.remove('intro-lock');
-    setTimeout(()=>{cancelAnimationFrame(raf); intro.remove();},900);
-  }
+  function dismiss(){if(dismissed)return;dismissed=true;intro.classList.add('done');document.body.classList.remove('intro-lock');setTimeout(()=>{cancelAnimationFrame(raf);intro.remove();},900);}
   const auto=setTimeout(dismiss,4000);
   intro.addEventListener('click',()=>{clearTimeout(auto);dismiss();});
   intro.addEventListener('touchstart',()=>{clearTimeout(auto);dismiss();},{passive:true});
-  addEventListener('keydown',(e)=>{if(!dismissed){clearTimeout(auto);dismiss();}});
+  addEventListener('keydown',e=>{if(!dismissed){clearTimeout(auto);dismiss();}});
 })();
 </script>
 </body>
