@@ -13,7 +13,6 @@ body.intro-lock{overflow:hidden;height:100vh}
 a{color:inherit;text-decoration:none}
 #flow{position:fixed;inset:0;z-index:-1}
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px;width:100%}
-
 /* ---- SOLAR INTRO ---- */
 #intro{position:fixed;inset:0;z-index:200;background:radial-gradient(circle at 50% 50%,#0c0c0c,#000 75%);display:flex;flex-direction:column;justify-content:center;align-items:center;cursor:pointer;transition:opacity .85s ease,visibility .85s}
 #intro.done{opacity:0;visibility:hidden}
@@ -24,15 +23,14 @@ a{color:inherit;text-decoration:none}
 .intro-sub{font-family:var(--mono);font-size:clamp(11px,1.6vw,14px);letter-spacing:.42em;color:var(--hot);margin-top:auto;padding-bottom:11vh;text-transform:uppercase}
 .intro-skip{position:absolute;bottom:5vh;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--faint);opacity:0;animation:introIn 1s ease 1.8s forwards}
 
-/* ---- NAV ---- */
-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(7,7,7,.7);border-bottom:1px solid var(--line)}
-.nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
-.logo{font-family:var(--mono);font-weight:700;letter-spacing:.18em;font-size:13px}
-.nav-links{display:flex;gap:26px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
-.nav-links a{color:var(--dim);transition:color .2s;position:relative;padding:4px 0}
-.nav-links a:hover,.nav-links a.active{color:var(--ink)}
-.nav-links a:hover::after,.nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;background:var(--hot)}
-.burger{display:none;font-family:var(--mono);color:var(--dim);background:none;border:1px solid var(--line2);padding:6px 12px;cursor:pointer;letter-spacing:.1em}
+
+
+
+
+
+
+
+
 
 /* ---- HERO (2-col with photo) ---- */
 .hero{min-height:calc(100vh - 70px);display:grid;grid-template-columns:1fr 270px;gap:56px;align-items:center;padding:60px 0}
@@ -46,20 +44,17 @@ nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(
 .btn.primary:hover{background:#ff8455}
 .btn.ghost{color:var(--ink);border-left:1px solid var(--line2)}
 .btn.ghost:hover{background:var(--panel2);color:var(--hot)}
-
 /* PROFESSIONAL PHOTO — replace .hero-photo-ph with <img src="..." alt="Parker McCall"> */
 .hero-photo{width:100%;aspect-ratio:3/4;border:1px solid var(--line2);background:var(--panel);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block}
 .hero-photo-ph{display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--faint);font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-align:center;padding:24px}
 .hero-photo-ph svg{opacity:.12}
-
 /* ---- STAT STRIP ---- */
 .strip{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:70px;background:rgba(7,7,7,.55)}
 .strip .s{flex:1;padding:28px 26px;border-right:1px solid var(--line)}
 .strip .s:last-child{border-right:none}
 .strip .s .n{font-size:22px;font-weight:700;letter-spacing:-.01em}
 .strip .s .l{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.16em;text-transform:uppercase;margin-top:8px}
-
 /* ---- SLIDESHOW ---- */
 .ss-section{padding:80px 0;border-top:1px solid var(--line)}
 .sec-label{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--hot);text-transform:uppercase;margin-bottom:10px}
@@ -91,7 +86,6 @@ nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(
 .ss-ov-close{position:absolute;top:14px;right:18px;font-family:var(--mono);font-size:20px;color:var(--dim);cursor:pointer;line-height:1;padding:4px;transition:.2s}
 .ss-ov-close:hover{color:var(--ink)}
 .ss-hint{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.18em;text-transform:uppercase;text-align:center;padding:12px 0 0;opacity:.7}
-
 /* ---- TIMELINE ---- */
 .tl-section{padding:80px 0 100px;border-top:1px solid var(--line)}
 .tl-list{position:relative}
@@ -109,40 +103,29 @@ nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(
 .tl-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .tl-desc{color:var(--dim);font-family:var(--mono);font-size:13px;line-height:1.8;max-width:540px;letter-spacing:.01em}
 
-footer{border-top:1px solid var(--line);padding:40px 0}
-.foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--faint);flex-wrap:wrap;gap:16px}
-.foot-in a:hover{color:var(--hot)}
-.reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
 
+
+.reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
 @media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto;padding:60px 0 40px;gap:36px}.hero-photo{aspect-ratio:3/2;max-width:340px}}
 @media(max-width:780px){
-  .wrap{padding:0 22px}.nav-links{display:none}.burger{display:block}
-  .nav-links.open{display:flex;position:absolute;top:70px;left:0;right:0;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 22px;gap:18px}
+  .wrap{padding:0 22px}
   .strip{flex-direction:column}.strip .s{border-right:none;border-bottom:1px solid var(--line)}.strip .s:last-child{border-bottom:none}
   .cta{width:100%}.btn{flex:1;justify-content:center}
   .tl-list::before{left:76px}.tl-entry{grid-template-columns:76px 1fr}
   .tl-right{padding-left:28px}.tl-left::after{right:-5px}
 }
 </style>
+<script src="/assets/site.js" defer></script>
 </head>
 <body>
 <canvas id="flow"></canvas>
-
 <div id="intro">
   <canvas id="solar"></canvas>
   <div class="intro-title">Parker McCall</div>
   <div class="intro-sub">Aerospace Engineer</div>
   <div class="intro-skip">CLICK ANYWHERE TO SKIP</div>
 </div>
-
-<nav><div class="wrap nav-in">
-  <a href="/" class="logo">PARKER McCALL</a>
-  <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')">MENU</button>
-  <div class="nav-links" id="nl">
-    <a href="https://parkermccall.com" class="active">/Home</a><a href="/resume/">/Resume</a><a href="/portfolio/">/Portfolio</a><a href="/Aerrow/">/Aerrow</a><a href="/contact/">/Contact</a>
-  </div>
-</div></nav>
-
+<!-- Header nav injected by /assets/site.js -->
 <div class="wrap">
 <div class="hero">
   <div class="hero-text">
@@ -154,7 +137,6 @@ footer{border-top:1px solid var(--line);padding:40px 0}
       <a class="btn ghost" href="/contact/">Get in touch</a>
     </div>
   </div>
-
   <!--
     PROFESSIONAL PHOTO
     Replace the .hero-photo-ph div with your headshot:
@@ -167,14 +149,12 @@ footer{border-top:1px solid var(--line);padding:40px 0}
   </div>
 </div>
 </div>
-
 <div class="wrap"><div class="strip reveal">
   <div class="s"><div class="n">84</div><div class="l">CAD Projects</div></div>
   <div class="s"><div class="n">11</div><div class="l">Coding Projects</div></div>
   <div class="s"><div class="n">4</div><div class="l">Woodworking Projects</div></div>
   <div class="s"><div class="n">1</div><div class="l">Circuitry Project</div></div>
 </div></div>
-
 <!--
   PROJECT SLIDESHOW
   Add real images: place <img id="ss-img-0" class="ss-real-img" src="..." alt="..."> etc. inside .ss-img-area
@@ -191,7 +171,6 @@ footer{border-top:1px solid var(--line);padding:40px 0}
         <div class="ss-ph-name" id="ss-ph-name">HTP / Jet-A Bipropellant Test Stand</div>
       </div>
       <!-- insert real slide images here (id="ss-img-0" through "ss-img-3") -->
-
       <div class="ss-overlay" id="ss-overlay">
         <span class="ss-ov-close" id="ss-ov-close">✕</span>
         <div class="ss-ov-proj" id="ss-ov-proj">PROJECT 01</div>
@@ -199,7 +178,6 @@ footer{border-top:1px solid var(--line);padding:40px 0}
         <div class="ss-ov-item" id="ss-ov-item">Bipropellant test hardware</div>
         <a class="ss-ov-btn" id="ss-ov-btn" href="/portfolio/1/">View Project →</a>
       </div>
-
       <button class="ss-arrow prev" id="ss-prev" aria-label="Previous">←</button>
       <button class="ss-arrow next" id="ss-next" aria-label="Next">→</button>
     </div>
@@ -210,7 +188,6 @@ footer{border-top:1px solid var(--line);padding:40px 0}
   </div>
   <div class="ss-hint">← → arrow keys or buttons to browse · click image for details</div>
 </div>
-
 <!--
   HISTORY TIMELINE — newest → oldest (top → bottom)
   Replace <span> inside .tl-img with <img src="..." alt="..."> for real photos.
@@ -220,7 +197,6 @@ footer{border-top:1px solid var(--line);padding:40px 0}
   <div class="sec-label reveal">// History</div>
   <div class="sec-title reveal">Background</div>
   <div class="tl-list">
-
     <!-- ENTRY 1 — Most Recent -->
     <div class="tl-entry reveal">
       <div class="tl-left">
@@ -233,7 +209,6 @@ footer{border-top:1px solid var(--line);padding:40px 0}
         <div class="tl-desc">[Add a brief description]</div>
       </div>
     </div>
-
     <!-- ENTRY 2 -->
     <div class="tl-entry reveal">
       <div class="tl-left">
@@ -246,7 +221,6 @@ footer{border-top:1px solid var(--line);padding:40px 0}
         <div class="tl-desc">[Add a brief description]</div>
       </div>
     </div>
-
     <!-- ENTRY 3 -->
     <div class="tl-entry reveal">
       <div class="tl-left">
@@ -259,21 +233,13 @@ footer{border-top:1px solid var(--line);padding:40px 0}
         <div class="tl-desc">[Add a brief description]</div>
       </div>
     </div>
-
     <!-- Copy a .tl-entry block above to add more entries. Newest at top. -->
-
   </div>
 </div>
-
-<footer><div class="wrap foot-in">
-  <span>© 2026 PARKER McCALL · NC STATE MAE</span>
-  <span><a href="/portfolio/">PORTFOLIO</a> · <a href="/contact/">CONTACT</a></span>
-</div></footer>
-
+<!-- Footer injected by /assets/site.js -->
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*70)+'ms';io.observe(el)});
-
 /* ===== PROJECT SLIDESHOW ===== */
 (function(){
   const slides=[
@@ -295,14 +261,12 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
   const ovBtn=document.getElementById('ss-ov-btn');
   const closeEl=document.getElementById('ss-ov-close');
   const dotsEl=document.getElementById('ss-dots');
-
   slides.forEach((_,i)=>{
     const d=document.createElement('span');
     d.className='ss-dot'+(i===0?' on':'');
     d.addEventListener('click',e=>{e.stopPropagation();show(i);});
     dotsEl.appendChild(d);
   });
-
   function show(idx){
     cur=(idx+slides.length)%slides.length;
     const s=slides[cur];
@@ -316,7 +280,6 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     if(overlayOpen)closeOverlay(false);
     resetTimer();
   }
-
   function openOverlay(){
     const s=slides[cur];
     projEl.textContent='PROJECT '+s.num;
@@ -327,15 +290,12 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     overlayOpen=true;
     clearInterval(timer);
   }
-
   function closeOverlay(restart=true){
     overlay.classList.remove('show');
     overlayOpen=false;
     if(restart)resetTimer();
   }
-
   function resetTimer(){clearInterval(timer);timer=setInterval(()=>show(cur+1),5000);}
-
   area.addEventListener('click',e=>{
     if(closeEl.contains(e.target)||ovBtn.contains(e.target)||
        document.getElementById('ss-prev').contains(e.target)||
@@ -350,10 +310,8 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     else if(e.key==='ArrowRight')show(cur+1);
     else if(e.key==='Escape'&&overlayOpen)closeOverlay();
   });
-
   show(0);
 })();
-
 /* ===== Schlieren flow-field background ===== */
 (function(){
   const c=document.getElementById('flow'); if(!c) return;
@@ -372,7 +330,6 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     requestAnimationFrame(frame);
   })();
 })();
-
 /* ===== Solar-system intro ===== */
 (function(){
   const intro=document.getElementById('intro'); if(!intro)return;

@@ -12,14 +12,13 @@ body{background:var(--bg);color:var(--ink);font-family:var(--disp);line-height:1
 a{color:inherit;text-decoration:none}
 #flow{position:fixed;inset:0;z-index:-1;opacity:.7}
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px;width:100%}
-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(7,7,7,.7);border-bottom:1px solid var(--line)}
-.nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
-.logo{font-family:var(--mono);font-weight:700;letter-spacing:.18em;font-size:13px}
-.nav-links{display:flex;gap:26px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
-.nav-links a{color:var(--dim);transition:color .2s;position:relative;padding:4px 0}
-.nav-links a:hover,.nav-links a.active{color:var(--ink)}
-.nav-links a:hover::after,.nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;background:var(--hot)}
-.burger{display:none;font-family:var(--mono);color:var(--dim);background:none;border:1px solid var(--line2);padding:6px 12px;cursor:pointer;letter-spacing:.1em}
+
+
+
+
+
+
+
 .phead{padding:70px 0 50px}
 .back{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--faint);transition:.2s;display:inline-flex;align-items:center;gap:8px;margin-bottom:32px}
 .back:hover{color:var(--hot)}
@@ -53,29 +52,21 @@ nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(
 .nav-btn{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--dim);transition:.2s;display:inline-flex;align-items:center;gap:10px;padding:4px 0;position:relative}
 .nav-btn::after{content:'';position:absolute;bottom:-6px;left:0;width:0;height:2px;background:var(--hot);transition:.25s}
 .nav-btn:hover{color:var(--ink)}.nav-btn:hover::after{width:100%}
-footer{border-top:1px solid var(--line);padding:40px 0}
-.foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--faint);flex-wrap:wrap;gap:16px}
-.foot-in a:hover{color:var(--hot)}
+
+
 .reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
-@media(max-width:780px){.wrap{padding:0 22px}.nav-links{display:none}.burger{display:block}.nav-links.open{display:flex;position:absolute;top:70px;left:0;right:0;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 22px;gap:18px}.gallery-grid{grid-template-columns:1fr;grid-template-rows:auto;height:auto}.img-main{grid-row:auto}.img-slot{aspect-ratio:4/3}.proj-detail{grid-template-columns:1fr}}
+@media(max-width:780px){.wrap{padding:0 22px}.gallery-grid{grid-template-columns:1fr;grid-template-rows:auto;height:auto}.img-main{grid-row:auto}.img-slot{aspect-ratio:4/3}.proj-detail{grid-template-columns:1fr}}
 </style>
+<script src="/assets/site.js" defer></script>
 </head>
 <body>
 <canvas id="flow"></canvas>
-<nav><div class="wrap nav-in">
-  <a href="/" class="logo">PARKER McCALL</a>
-  <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')">MENU</button>
-  <div class="nav-links" id="nl">
-    <a href="https://parkermccall.com">/home</a><a href="/resume/">/resume</a><a href="/portfolio/" class="active">/portfolio</a><a href="/about/">/about</a><a href="/contact/">/contact</a>
-  </div>
-</div></nav>
-
+<!-- Header nav injected by /assets/site.js -->
 <div class="wrap phead">
   <a href="/portfolio/" class="back reveal">← Back to Portfolio</a>
   <div class="proj-cat reveal">FABRICATION · MAKER</div>
   <h1 class="reveal">Shop & Fabrication<br>Projects</h1>
 </div>
-
 <div class="wrap">
 <div class="gallery reveal">
   <div class="gallery-grid">
@@ -93,7 +84,6 @@ footer{border-top:1px solid var(--line);padding:40px 0}
     </div>
   </div>
 </div>
-
 <div class="proj-detail">
   <div class="detail-main">
     <div class="detail-block reveal">
@@ -135,11 +125,7 @@ footer{border-top:1px solid var(--line);padding:40px 0}
   <a href="/portfolio/4/" class="nav-btn">Next Project →</a>
 </div>
 </div>
-
-<footer><div class="wrap foot-in">
-  <span>© 2026 PARKER McCALL · NC STATE MAE</span>
-  <span><a href="/portfolio/">PORTFOLIO</a> · <a href="/contact/">CONTACT</a></span>
-</div></footer>
+<!-- Footer injected by /assets/site.js -->
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*70)+'ms';io.observe(el)});

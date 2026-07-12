@@ -12,14 +12,13 @@ body{background:var(--bg);color:var(--ink);font-family:var(--disp);line-height:1
 a{color:inherit;text-decoration:none}
 #flow{position:fixed;inset:0;z-index:-1;opacity:.7}
 .wrap{max-width:1200px;margin:0 auto;padding:0 40px;width:100%}
-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(7,7,7,.7);border-bottom:1px solid var(--line)}
-.nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
-.logo{font-family:var(--mono);font-weight:700;letter-spacing:.18em;font-size:13px}
-.nav-links{display:flex;gap:26px;font-family:var(--mono);font-size:12px;letter-spacing:.1em}
-.nav-links a{color:var(--dim);transition:color .2s;position:relative;padding:4px 0}
-.nav-links a:hover,.nav-links a.active{color:var(--ink)}
-.nav-links a:hover::after,.nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:2px;background:var(--hot)}
-.burger{display:none;font-family:var(--mono);color:var(--dim);background:none;border:1px solid var(--line2);padding:6px 12px;cursor:pointer;letter-spacing:.1em}
+
+
+
+
+
+
+
 main{flex:1;display:flex;align-items:center;padding:80px 0}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--hot);margin-bottom:22px;text-transform:uppercase}
 .clayout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;width:100%}
@@ -50,23 +49,16 @@ main{flex:1;display:flex;align-items:center;padding:80px 0}
 .fmsg.show{display:block}
 .fmsg.ok{color:var(--cool)}
 .fmsg.err{color:var(--hot)}
-footer{border-top:1px solid var(--line);padding:36px 0}
-.foot-in{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--faint);flex-wrap:wrap;gap:16px}
-.foot-in a:hover{color:var(--hot)}
+
+
 .reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
-@media(max-width:780px){.wrap{padding:0 22px}.nav-links{display:none}.burger{display:block}.nav-links.open{display:flex;position:absolute;top:70px;left:0;right:0;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--line);padding:20px 22px;gap:18px}.clayout{grid-template-columns:1fr;gap:38px}}
+@media(max-width:780px){.wrap{padding:0 22px}.clayout{grid-template-columns:1fr;gap:38px}}
 </style>
+<script src="/assets/site.js" defer></script>
 </head>
 <body>
 <canvas id="flow"></canvas>
-<nav><div class="wrap nav-in">
-  <a href="/" class="logo">PARKER McCALL</a>
-  <button class="burger" onclick="document.getElementById('nl').classList.toggle('open')">MENU</button>
-  <div class="nav-links" id="nl">
-    <a href="https://parkermccall.com">/Home</a><a href="/resume/">/Resume</a><a href="/portfolio/">/Portfolio</a><a href="/Aerrow/">/Aerrow</a><a href="/contact/" class="active">/Contact</a>
-  </div>
-</div></nav>
-
+<!-- Header nav injected by /assets/site.js -->
 <main><div class="wrap clayout">
   <div class="cleft reveal">
     <div class="eyebrow">Get in touch</div>
@@ -87,7 +79,6 @@ footer{border-top:1px solid var(--line);padding:36px 0}
       </a>
     </div>
   </div>
-
   <div class="cform reveal">
     <div class="ftitle">// Send a message</div>
     <div class="frow">
@@ -112,19 +103,13 @@ footer{border-top:1px solid var(--line);padding:36px 0}
     <div class="fmsg" id="cf-msg"></div>
   </div>
 </div></main>
-
-<footer><div class="wrap foot-in">
-  <span>© 2026 PARKER McCALL · NC STATE MAE</span>
-  <span><a href="/">HOME</a> · <a href="/portfolio/">PORTFOLIO</a></span>
-</div></footer>
-
+<!-- Footer injected by /assets/site.js -->
 <script>
 /* ===== Contact form submission =====
    To receive submissions in your inbox, create a free form at https://formspree.io
    and paste your endpoint URL below (looks like https://formspree.io/f/abcdwxyz).
    While it's left blank, the form falls back to opening the visitor's email client. */
 const FORMSPREE_ENDPOINT = ""; // <-- paste your Formspree URL here
-
 async function sendMessage(){
   const name=document.getElementById('cf-name').value.trim();
   const email=document.getElementById('cf-email').value.trim();
@@ -133,7 +118,6 @@ async function sendMessage(){
   const btn=document.getElementById('cf-submit');
   const msg=document.getElementById('cf-msg');
   msg.className='fmsg';
-
   if(!name||!email||!message){
     msg.textContent='// Please fill in your name, email, and message.';
     msg.classList.add('show','err'); return;
@@ -142,7 +126,6 @@ async function sendMessage(){
     msg.textContent='// That email address doesn\u2019t look right.';
     msg.classList.add('show','err'); return;
   }
-
   // Fallback: no endpoint configured -> open mail client
   if(!FORMSPREE_ENDPOINT){
     const body=`Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0A${encodeURIComponent(message)}`;
@@ -151,7 +134,6 @@ async function sendMessage(){
     msg.textContent='// Opening your email app\u2026';
     msg.classList.add('show','ok'); return;
   }
-
   btn.disabled=true; btn.textContent='Sending\u2026';
   try{
     const res=await fetch(FORMSPREE_ENDPOINT,{
@@ -173,7 +155,6 @@ async function sendMessage(){
     btn.disabled=false; btn.textContent='Send message \u2192';
   }
 }
-
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
 /* ===== Schlieren flow-field background (subtle, behind content) ===== */
