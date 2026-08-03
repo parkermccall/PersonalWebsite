@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Parker McCall</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<style>
+:root{--bg:#070707;--panel:#0d0d0d;--panel2:#101010;--line:#1c1c1a;--line2:#2a2a27;--ink:#f5f3ee;--dim:#8c8c84;--faint:#5e5e57;--hot:#ff6b35;--cool:#48cae4;--mono:ui-monospace,'Cascadia Mono','SF Mono',Menlo,monospace;--disp:'Helvetica Neue',Arial,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--disp);line-height:1.6;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+#flow{position:fixed;inset:0;z-index:-1;opacity:.7}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px;width:100%}
+
+
+
+
+
+
+
+main{flex:1;display:flex;align-items:center;padding:80px 0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--hot);margin-bottom:22px;text-transform:uppercase}
+.clayout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;width:100%}
+.cleft h1{font-size:clamp(44px,7vw,80px);font-weight:800;letter-spacing:-.04em;line-height:.92;margin-bottom:24px}
+.cleft h1 .o{color:var(--hot)}
+.cleft p{color:var(--dim);font-family:var(--mono);font-size:14px;line-height:1.7;max-width:420px;letter-spacing:.01em}
+.links{display:grid;gap:0;border:1px solid var(--line)}
+.lrow{display:flex;align-items:center;justify-content:space-between;background:rgba(13,13,13,.7);border-bottom:1px solid var(--line);padding:24px 28px;transition:.22s;cursor:pointer}
+.lrow:last-child{border-bottom:none}
+.lrow:hover{background:var(--panel2);padding-left:34px}
+.lrow .lbl{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.2em;text-transform:uppercase}
+.lrow .val{font-family:var(--mono);font-size:15px;font-weight:700;margin-top:6px}
+.lrow .arr{font-family:var(--mono);color:var(--hot);font-size:18px;transition:.2s}
+.lrow:hover .arr{transform:translate(3px,-3px)}
+/* ---- FORM ---- */
+.cform{border:1px solid var(--line2);background:rgba(13,13,13,.72);padding:32px}
+.cform .ftitle{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--faint);text-transform:uppercase;margin-bottom:22px}
+.field{margin-bottom:18px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:8px}
+.field input,.field textarea{width:100%;background:var(--bg);border:1px solid var(--line2);color:var(--ink);font-family:var(--mono);font-size:13px;padding:13px 14px;transition:.2s;letter-spacing:.02em;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--hot);background:#0a0a0a}
+.field textarea{min-height:120px;line-height:1.6}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.submit{width:100%;background:var(--hot);color:#070707;font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;border:none;padding:16px;cursor:pointer;transition:.2s;margin-top:4px}
+.submit:hover{background:#ff8455}
+.submit:disabled{opacity:.55;cursor:default}
+.fmsg{font-family:var(--mono);font-size:12px;letter-spacing:.04em;margin-top:16px;line-height:1.6;display:none}
+.fmsg.show{display:block}
+.fmsg.ok{color:var(--cool)}
+.fmsg.err{color:var(--hot)}
+
+
+.reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.8,.2,1)}.reveal.in{opacity:1;transform:none}
+@media(max-width:780px){.wrap{padding:0 22px}.clayout{grid-template-columns:1fr;gap:38px}}
+</style>
+<script src="/assets/site.js" defer></script>
+</head>
+<body>
+<canvas id="flow"></canvas>
+<!-- Header nav injected by /assets/site.js -->
+<main><div class="wrap clayout">
+  <div class="cleft reveal">
+    <div class="eyebrow">Get in touch</div>
+    <h1>Interested to<br>know <span class="o">more?</span></h1>
+    <p>Open to research and/or internships, collaborations in liquid/solid rocketry, fixed wing RC, and drone development. Always open to starting a dialogue on any subject. Fill out the form, or reach me directly below.</p>
+    <div class="links" style="margin-top:32px">
+      <a class="lrow" href="mailto:ParkerMccall@AerrowLabs.com">
+        <div><div class="lbl">Email</div><div class="val">ParkerMccall@AerrowLabs.com</div></div>
+        <span class="arr">↗</span>
+      </a>
+      <a class="lrow" href="https://linkedin.com/in/parker-mccall">
+        <div><div class="lbl">LinkedIn</div><div class="val">linkedin.com/in/parker-mccall</div></div>
+        <span class="arr">↗</span>
+      </a>
+      <a class="lrow" href="#">
+        <div><div class="lbl">Location</div><div class="val">Raleigh, NC</div></div>
+        <span class="arr">↗</span>
+      </a>
+    </div>
+  </div>
+  <div class="cform reveal">
+    <div class="ftitle">// Send a message</div>
+    <div class="frow">
+      <div class="field">
+        <label for="cf-name">Name</label>
+        <input id="cf-name" name="name" type="text" placeholder="Your name" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="cf-email">Email</label>
+        <input id="cf-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+    </div>
+    <div class="field">
+      <label for="cf-subject">Subject</label>
+      <input id="cf-subject" name="subject" type="text" placeholder="What's this about?">
+    </div>
+    <div class="field">
+      <label for="cf-message">Message</label>
+      <textarea id="cf-message" name="message" placeholder="Write your message…" required></textarea>
+    </div>
+    <button class="submit" id="cf-submit" onclick="sendMessage()">Send message →</button>
+    <div class="fmsg" id="cf-msg"></div>
+  </div>
+</div></main>
+<!-- Footer injected by /assets/site.js -->
+<script>
+/* ===== Contact form submission =====
+   To receive submissions in your inbox, create a free form at https://formspree.io
+   and paste your endpoint URL below (looks like https://formspree.io/f/abcdwxyz).
+   While it's left blank, the form falls back to opening the visitor's email client. */
+const FORMSPREE_ENDPOINT = ""; // <-- paste your Formspree URL here
+async function sendMessage(){
+  const name=document.getElementById('cf-name').value.trim();
+  const email=document.getElementById('cf-email').value.trim();
+  const subject=document.getElementById('cf-subject').value.trim();
+  const message=document.getElementById('cf-message').value.trim();
+  const btn=document.getElementById('cf-submit');
+  const msg=document.getElementById('cf-msg');
+  msg.className='fmsg';
+  if(!name||!email||!message){
+    msg.textContent='// Please fill in your name, email, and message.';
+    msg.classList.add('show','err'); return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    msg.textContent='// That email address doesn\u2019t look right.';
+    msg.classList.add('show','err'); return;
+  }
+  // Fallback: no endpoint configured -> open mail client
+  if(!FORMSPREE_ENDPOINT){
+    const body=`Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0A${encodeURIComponent(message)}`;
+    const subj=encodeURIComponent(subject||`Website message from ${name}`);
+    window.location.href=`mailto:ParkerMccall@AerrowLabs.com?subject=${subj}&body=${body}`;
+    msg.textContent='// Opening your email app\u2026';
+    msg.classList.add('show','ok'); return;
+  }
+  btn.disabled=true; btn.textContent='Sending\u2026';
+  try{
+    const res=await fetch(FORMSPREE_ENDPOINT,{
+      method:'POST',
+      headers:{'Accept':'application/json'},
+      body:(()=>{const fd=new FormData();fd.append('name',name);fd.append('email',email);fd.append('subject',subject);fd.append('message',message);return fd;})()
+    });
+    if(res.ok){
+      msg.textContent='// Message sent \u2014 thanks, I\u2019ll get back to you soon.';
+      msg.classList.add('show','ok');
+      ['cf-name','cf-email','cf-subject','cf-message'].forEach(id=>document.getElementById(id).value='');
+    }else{
+      throw new Error('bad status');
+    }
+  }catch(e){
+    msg.textContent='// Something went wrong sending. Email me directly at ParkerMccall@AerrowLabs.com.';
+    msg.classList.add('show','err');
+  }finally{
+    btn.disabled=false; btn.textContent='Send message \u2192';
+  }
+}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
+/* ===== Schlieren flow-field background (subtle, behind content) ===== */
+(function(){
+  const c=document.getElementById('flow'); if(!c) return;
+  const x=c.getContext('2d'); let W,H,P=[];
+  function size(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;
+    c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';
+    x.setTransform(dpr,0,0,dpr,0,0);
+  }
+  size();addEventListener('resize',size);
+  const COUNT=innerWidth<700?55:110;
+  for(let i=0;i<COUNT;i++)P.push({x:Math.random()*W,y:Math.random()*H,s:.4+Math.random()*1.5,o:.06+Math.random()*.20});
+  function noise(y){return Math.sin(y*0.012)*1.4}
+  (function frame(){
+    x.fillStyle='rgba(7,7,7,0.16)';x.fillRect(0,0,W,H);
+    for(const p of P){
+      const v=2.0*p.s+noise(p.y);
+      p.x+=v;p.y+=Math.sin((p.x+p.y)*0.004)*0.5;
+      if(p.x>W+20){p.x=-20;p.y=Math.random()*H}
+      x.strokeStyle=p.s>1.0?'rgba(255,107,53,'+p.o+')':'rgba(72,202,228,'+(p.o*.85)+')';
+      x.lineWidth=p.s;
+      x.beginPath();x.moveTo(p.x,p.y);x.lineTo(p.x-v*5,p.y-Math.sin((p.x+p.y)*0.004)*2.6);x.stroke();
+    }
+    requestAnimationFrame(frame);
+  })();
+})();
+</script>
+</body>
+</html>
