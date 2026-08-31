@@ -214,8 +214,9 @@ a{color:inherit;text-decoration:none}
   </div>
 <!--
   PROJECT SLIDESHOW
-  Add real images: place <img id="ss-img-0" class="ss-real-img" src="..." alt="..."> etc. inside .ss-img-area
-  One per slide (0–3). JS will auto-show/hide them.
+  Add real images: place <img class="ss-real-img" data-slide="N" src="..." alt="..."> inside .ss-img-area,
+  where N is the slide index (0–3). You can add more than one image per slide — they'll auto-rotate
+  with their own dot indicator while that slide is active. JS auto-shows/hides them.
 -->
 <div class="wrap ss-section reveal">
   <div class="sec-label">// Project Highlights</div>
@@ -227,7 +228,11 @@ a{color:inherit;text-decoration:none}
         <div class="ss-ph-tag">Click to view project details</div>
         <div class="ss-ph-name" id="ss-ph-name">HTP / Jet-A Bipropellant Test Stand</div>
       </div>
-      <!-- insert real slide images here (id="ss-img-0" through "ss-img-3") -->
+      <!-- Slide 0 (Project 01 / portfolio 1) real photos — cycles through all three -->
+      <img class="ss-real-img show" data-slide="0" src="/assets/TS_img1.png" alt="HTP/Jet-A Bipropellant Test Stand Main View">
+      <img class="ss-real-img" data-slide="0" src="/assets/TS_img2.png" alt="Thrust Railing">
+      <img class="ss-real-img" data-slide="0" src="/assets/TS_img3.png" alt="Tank Linear Railing">
+      <!-- insert real slide images here for other slides (data-slide="1" | "2" | "3") -->
       <div class="ss-overlay" id="ss-overlay">
         <span class="ss-ov-close" id="ss-ov-close">✕</span>
         <div class="ss-ov-proj" id="ss-ov-proj">PROJECT 01</div>
@@ -375,16 +380,60 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     d.addEventListener('click',e=>{e.stopPropagation();show(i);});
     dotsEl.appendChild(d);
   });
+
+  /* real photos, grouped by which slide (project) they belong to via data-slide */
+  const allImgs=Array.from(document.querySelectorAll('.ss-real-img'));
+  const imgGroups={};
+  allImgs.forEach(img=>{
+    const s=+img.dataset.slide;
+    (imgGroups[s]=imgGroups[s]||[]).push(img);
+  });
+  let subIdx=0,subTimer,subDots=null;
+
+  function showSub(i){
+    const group=imgGroups[cur];
+    if(!group||!group.length)return;
+    subIdx=(i+group.length)%group.length;
+    group.forEach((img,k)=>img.classList.toggle('show',k===subIdx));
+    if(subDots)subDots.forEach((d,k)=>d.classList.toggle('on',k===subIdx));
+  }
+  function resetSubTimer(){
+    clearInterval(subTimer);
+    const group=imgGroups[cur];
+    if(group&&group.length>1)subTimer=setInterval(()=>showSub(subIdx+1),2600);
+  }
+  function rebuildSubDots(){
+    const old=area.querySelector('.tl-dots');
+    if(old)old.remove();
+    subDots=null;
+    const group=imgGroups[cur];
+    if(group&&group.length>1){
+      const dots=document.createElement('div');
+      dots.className='tl-dots';
+      group.forEach((_,i)=>{
+        const d=document.createElement('span');
+        d.className='tl-dot'+(i===0?' on':'');
+        d.addEventListener('click',e=>{e.stopPropagation();showSub(i);resetSubTimer();});
+        dots.appendChild(d);
+      });
+      area.appendChild(dots);
+      subDots=dots.querySelectorAll('.tl-dot');
+    }
+  }
+
   function show(idx){
     cur=(idx+slides.length)%slides.length;
     const s=slides[cur];
     phNum.textContent=s.num;
     phName.textContent=s.project;
     nameLabel.textContent=s.project;
-    document.querySelectorAll('.ss-dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
-    const imgs=document.querySelectorAll('.ss-real-img');
-    imgs.forEach((img,i)=>img.classList.toggle('show',i===cur));
-    ph.style.visibility=document.querySelector('.ss-real-img')?'hidden':'visible';
+    document.querySelectorAll('.ss-dot').forEach((d,i)=>{if(dotsEl.contains(d))d.classList.toggle('on',i===cur);});
+    allImgs.forEach(img=>img.classList.remove('show'));
+    const group=imgGroups[cur];
+    ph.style.visibility=(group&&group.length)?'hidden':'visible';
+    rebuildSubDots();
+    if(group&&group.length)showSub(0);
+    resetSubTimer();
     if(overlayOpen)closeOverlay(false);
     resetTimer();
   }
