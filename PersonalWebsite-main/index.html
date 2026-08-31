@@ -112,8 +112,25 @@ a{color:inherit;text-decoration:none}
 .tl-title{font-size:clamp(18px,2.2vw,22px);font-weight:700;letter-spacing:-.01em;margin-bottom:22px}
 /* replace <span> inside .tl-img with <img src="..." alt="..."> when ready */
 .tl-img{width:100%;max-width:500px;aspect-ratio:16/9;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px;position:relative;overflow:hidden}
-.tl-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.tl-img.portrait{aspect-ratio:3/4;max-width:380px}
+.tl-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;cursor:zoom-in;transition:transform .3s}
+.tl-img img.show{display:block}
+.tl-img img.show:hover{transform:scale(1.03)}
+.tl-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:2}
+.tl-dot{width:6px;height:6px;border-radius:50%;background:rgba(245,243,238,.4);cursor:pointer;transition:.2s}
+.tl-dot.on{background:var(--hot)}
 .tl-desc{color:var(--dim);font-family:var(--mono);font-size:13px;line-height:1.8;max-width:540px;letter-spacing:.01em}
+/* ---- LIGHTBOX (click any timeline photo to enlarge) ---- */
+.tl-lb{position:fixed;inset:0;background:rgba(4,4,4,.92);display:flex;align-items:center;justify-content:center;z-index:300;opacity:0;visibility:hidden;transition:.25s;padding:40px}
+.tl-lb.show{opacity:1;visibility:visible}
+.tl-lb-img{max-width:min(90vw,900px);max-height:85vh;object-fit:contain;border:1px solid var(--line2);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.tl-lb-close{position:absolute;top:22px;right:28px;font-family:var(--mono);font-size:26px;color:var(--dim);cursor:pointer;transition:.2s;line-height:1;z-index:2}
+.tl-lb-close:hover{color:var(--ink)}
+.tl-lb-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(7,7,7,.78);border:1px solid var(--line2);color:var(--ink);width:52px;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:var(--mono);font-size:20px;transition:.2s}
+.tl-lb-arrow:hover{background:var(--hot);border-color:var(--hot);color:#070707}
+.tl-lb-arrow.prev{left:24px}
+.tl-lb-arrow.next{right:24px}
+@media(max-width:780px){.tl-lb-arrow{width:42px;height:42px;font-size:16px}.tl-lb-close{top:14px;right:18px;font-size:22px}}
 
 
 
@@ -191,14 +208,15 @@ a{color:inherit;text-decoration:none}
     <div class="box">
       <h3>// toolkit</h3>
       <div class="skills">
-        <span class="chip">SolidWorks</span><span class="chip">Fusion</span><span class="chip">Python</span><span class="chip">MATLAB</span><span class="chip">Lathe Machining</span><span class="chip">Instrumentatio</span><span class="chip">3D Printing</span><span class="chip">Woodworking</span><span class="chip">Welding</span>
+        <span class="chip">SolidWorks</span><span class="chip">Fusion</span><span class="chip">Python</span><span class="chip">MATLAB</span><span class="chip">Finite Element Analysis</span><span class="chip">Instrumentation</span><span class="chip">3D Printing</span><span class="chip">Woodworking</span><span class="chip">Welding</span>
       </div>
     </div>
   </div>
 <!--
   PROJECT SLIDESHOW
-  Add real images: place <img id="ss-img-0" class="ss-real-img" src="..." alt="..."> etc. inside .ss-img-area
-  One per slide (0–3). JS will auto-show/hide them.
+  Add real images: place <img class="ss-real-img" data-slide="N" src="..." alt="..."> inside .ss-img-area,
+  where N is the slide index (0–3). You can add more than one image per slide — they'll auto-rotate
+  with their own dot indicator while that slide is active. JS auto-shows/hides them.
 -->
 <div class="wrap ss-section reveal">
   <div class="sec-label">// Project Highlights</div>
@@ -210,7 +228,11 @@ a{color:inherit;text-decoration:none}
         <div class="ss-ph-tag">Click to view project details</div>
         <div class="ss-ph-name" id="ss-ph-name">HTP / Jet-A Bipropellant Test Stand</div>
       </div>
-      <img src="/assets/TS_img1.png" alt="HTP/Jet-A Bipropellant Test Stand Main View"
+      <!-- Slide 0 (Project 01 / portfolio 1) real photos — cycles through all three -->
+      <img class="ss-real-img show" data-slide="0" src="/assets/TS_img1.png" alt="HTP/Jet-A Bipropellant Test Stand Main View">
+      <img class="ss-real-img" data-slide="0" src="/assets/TS_img2.png" alt="Thrust Railing">
+      <img class="ss-real-img" data-slide="0" src="/assets/TS_img3.png" alt="Tank Linear Railing">
+      <!-- insert real slide images here for other slides (data-slide="1" | "2" | "3") -->
       <div class="ss-overlay" id="ss-overlay">
         <span class="ss-ov-close" id="ss-ov-close">✕</span>
         <div class="ss-ov-proj" id="ss-ov-proj">PROJECT 01</div>
@@ -230,7 +252,9 @@ a{color:inherit;text-decoration:none}
 </div>
 <!--
   HISTORY TIMELINE — newest → oldest (top → bottom)
-  Replace <span> inside .tl-img with <img src="..." alt="..."> for real photos.
+  Replace <span> inside .tl-img with one or more <img src="..." alt="..."> tags for real photos.
+  Add multiple <img> tags inside the same .tl-img to create a photo gallery — dot navigation
+  appears automatically. Click any photo to enlarge it in a lightbox (arrows/keyboard to browse).
   Copy any .tl-entry block to add more entries.
 -->
 <div class="wrap tl-section">
@@ -245,9 +269,8 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="tl-right">
         <div class="tl-title">Propulsion Engineer — Liquid Rocketry Lab</div>
-        <div class="tl-img"><span>Add image here</span></div>
-        <div class="tl-desc">Working as a propulsion engineer, this has been the most fun oppurtunity I've been a part of. I get the oppurtunity to design, machine, and analyze data for liquid rocket engine systems.
-        My first time using a CNC mill is in the photo above and I have since learned to lathe and manually mill. I am excited to develop more skills working with LRL.</div>
+        <div class="tl-img portrait"><img src="/assets/about_lrl.jpg" alt="Parker McCall LRL"></div>
+        <div class="tl-desc">Working as a propulsion engineer designing components</div>
       </div>
     </div>
     <!-- ENTRY 2 -->
@@ -258,7 +281,7 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="tl-right">
         <div class="tl-title">Student — North Carolina State Univeristy</div>
-        <div class="tl-img"><span>Add image here</span></div>
+        <div class="tl-img portrait"><img src="/assets/about_ncsu.jpg" alt="Parker McCall at the Bell Tower"></div>
         <div class="tl-desc">My first year at NC state was spent as a political science major with an intent to pursue a law degree after undergrad. I realized my love for the law was being consistently overshadowed by my love for building and aviation.
         in janurary of 2025, I CODA'd into Aerospace Engineering and have loved every second of it, even with no engineering background or STEM parent. I have a passion for building so deeply embedded into me that I actually have to force myself to stop
         trying to design, develop, and manufacture a solution for every problem I come across.</div>
@@ -272,7 +295,7 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="tl-right">
         <div class="tl-title">Operations Control Center Supervisor — United States Air Force</div>
-        <div class="tl-img"><img src="/assets/about_aviano.jpg" alt="Parker McCall receiving Staff Sergeant promotion notification at Aviano Air Base, Italy"></div>
+        <div class="tl-img portrait"><img src="/assets/about_aviano.jpg" alt="Parker McCall receiving Staff Sergeant promotion notification at Aviano Air Base, Italy"></div>
         <div class="tl-desc">Ater my tour in South Korea, I was stationed at Aviano Air Base in Italy. This was by far my favorite duty station and one that came with a promotion and a house in the mountains. Although my work schedule was brutually stressful and unforgiving,
         I loved Italy and still continue listening and speaking in italian as often as I can.</div>
       </div>
@@ -283,8 +306,8 @@ a{color:inherit;text-decoration:none}
         <div class="tl-loc">Lakenheath,<br>United Kingdom</div>
       </div>
       <div class="tl-right">
-        <div class="tl-title">TDY — United States Air Force</div>
-        <div class="tl-img"><span>Add image here</span></div>
+        <div class="tl-title">TDY (Limited/Restricted Info) — United States Air Force</div>
+        <div class="tl-img portrait"><img src="" alt="Parker McCall TDY"></div>
         <div class="tl-desc">Selected to support an exercise in the United Kingdom wherein we came to provide support joint operations with NATO allies.</div>
       </div>
     </div>
@@ -295,7 +318,7 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="tl-right">
         <div class="tl-title">Aircraft Fuels Facilities Operator — United States Air Force</div>
-        <div class="tl-img"><span>Add image here</span></div>
+        <div class="tl-img portrait"><img src="/assets/about_kunsan.jpg" alt="Parker McCall Kunsan"></div>
         <div class="tl-desc">My first long term tour was at my arrival to Kunsan Air Base, South Korea. I showed up after my deployment with skills, expertise, and an ambitious drive that outclassed my peers who were higher in rank and age. This led to me getting multiple awards,
           a promotion, and a change in duty title.</div>
       </div>
@@ -307,7 +330,7 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="tl-right">
         <div class="tl-title">Deployed to the Middle East — United States Air Force</div>
-        <div class="tl-img"><img src="/assets/about_deployed.jpg" alt="Parker McCall on the flightline at Ali Al Salem Air Base, Kuwait"></div>
+        <div class="tl-img portrait"><img src="" alt="Parker McCall on the flightline at Ali Al Salem Air Base, Kuwait"></div>
         <div class="tl-desc">Deployed to the middle east, during operation Enduring Freedom where I was awarded a medal for my service.</div>
       </div>
     </div>
@@ -318,12 +341,13 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="tl-right">
         <div class="tl-title">Aircraft Fuels Distrobution Operator — United States Air Force</div>
-        <div class="tl-img"><span>Add image here</span></div>
+         <div class="tl-img portrait"><img src="/assets/about_robins.jpg" alt="Parker McCall Robins"></div>
         <div class="tl-desc">I joined the USAF in September of 2018, I completed bootcamp at Lackland AFB and my technical training at Sheppard AFB. I was then station at Robins AFB where I recieved my On-Job-Training and later where I deployed from.</div>
       </div>
     </div>
     <!-- Copy a .tl-entry block above to add more entries. Newest at top. -->
   </div>
+  <div class="ss-hint">click a photo to enlarge · dots appear when an entry has multiple photos</div>
 </div>
 <!-- Footer injected by /assets/site.js -->
 <script>
@@ -356,16 +380,60 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     d.addEventListener('click',e=>{e.stopPropagation();show(i);});
     dotsEl.appendChild(d);
   });
+
+  /* real photos, grouped by which slide (project) they belong to via data-slide */
+  const allImgs=Array.from(document.querySelectorAll('.ss-real-img'));
+  const imgGroups={};
+  allImgs.forEach(img=>{
+    const s=+img.dataset.slide;
+    (imgGroups[s]=imgGroups[s]||[]).push(img);
+  });
+  let subIdx=0,subTimer,subDots=null;
+
+  function showSub(i){
+    const group=imgGroups[cur];
+    if(!group||!group.length)return;
+    subIdx=(i+group.length)%group.length;
+    group.forEach((img,k)=>img.classList.toggle('show',k===subIdx));
+    if(subDots)subDots.forEach((d,k)=>d.classList.toggle('on',k===subIdx));
+  }
+  function resetSubTimer(){
+    clearInterval(subTimer);
+    const group=imgGroups[cur];
+    if(group&&group.length>1)subTimer=setInterval(()=>showSub(subIdx+1),2600);
+  }
+  function rebuildSubDots(){
+    const old=area.querySelector('.tl-dots');
+    if(old)old.remove();
+    subDots=null;
+    const group=imgGroups[cur];
+    if(group&&group.length>1){
+      const dots=document.createElement('div');
+      dots.className='tl-dots';
+      group.forEach((_,i)=>{
+        const d=document.createElement('span');
+        d.className='tl-dot'+(i===0?' on':'');
+        d.addEventListener('click',e=>{e.stopPropagation();showSub(i);resetSubTimer();});
+        dots.appendChild(d);
+      });
+      area.appendChild(dots);
+      subDots=dots.querySelectorAll('.tl-dot');
+    }
+  }
+
   function show(idx){
     cur=(idx+slides.length)%slides.length;
     const s=slides[cur];
     phNum.textContent=s.num;
     phName.textContent=s.project;
     nameLabel.textContent=s.project;
-    document.querySelectorAll('.ss-dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
-    const imgs=document.querySelectorAll('.ss-real-img');
-    imgs.forEach((img,i)=>img.classList.toggle('show',i===cur));
-    ph.style.visibility=document.querySelector('.ss-real-img')?'hidden':'visible';
+    document.querySelectorAll('.ss-dot').forEach((d,i)=>{if(dotsEl.contains(d))d.classList.toggle('on',i===cur);});
+    allImgs.forEach(img=>img.classList.remove('show'));
+    const group=imgGroups[cur];
+    ph.style.visibility=(group&&group.length)?'hidden':'visible';
+    rebuildSubDots();
+    if(group&&group.length)showSub(0);
+    resetSubTimer();
     if(overlayOpen)closeOverlay(false);
     resetTimer();
   }
@@ -400,6 +468,79 @@ document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(
     else if(e.key==='Escape'&&overlayOpen)closeOverlay();
   });
   show(0);
+})();
+/* ===== Timeline photo galleries + lightbox ===== */
+(function(){
+  const galleries=document.querySelectorAll('.tl-img');
+  const hasPhotos=Array.from(galleries).some(g=>g.querySelector('img'));
+  if(!hasPhotos)return;
+  const lb=document.createElement('div');
+  lb.className='tl-lb';
+  lb.innerHTML=`<span class="tl-lb-close" aria-label="Close">✕</span><button class="tl-lb-arrow prev" aria-label="Previous">←</button><img class="tl-lb-img" alt=""><button class="tl-lb-arrow next" aria-label="Next">→</button>`;
+  document.body.appendChild(lb);
+  const lbImg=lb.querySelector('.tl-lb-img');
+  const lbPrev=lb.querySelector('.prev');
+  const lbNext=lb.querySelector('.next');
+  const lbClose=lb.querySelector('.tl-lb-close');
+  let activeImgs=[],activeIdx=0;
+
+  galleries.forEach(gallery=>{
+    const imgs=Array.from(gallery.querySelectorAll('img'));
+    if(!imgs.length)return;
+    imgs[0].classList.add('show');
+    let dotEls=null;
+    if(imgs.length>1){
+      const dots=document.createElement('div');
+      dots.className='tl-dots';
+      imgs.forEach((_,i)=>{
+        const d=document.createElement('span');
+        d.className='tl-dot'+(i===0?' on':'');
+        d.addEventListener('click',e=>{e.stopPropagation();setSlide(i);});
+        dots.appendChild(d);
+      });
+      gallery.appendChild(dots);
+      dotEls=dots.querySelectorAll('.tl-dot');
+    }
+    function setSlide(i){
+      const idx=(i+imgs.length)%imgs.length;
+      imgs.forEach((img,k)=>img.classList.toggle('show',k===idx));
+      if(dotEls)dotEls.forEach((d,k)=>d.classList.toggle('on',k===idx));
+    }
+    imgs.forEach((img,i)=>img.addEventListener('click',()=>openLightbox(imgs,i)));
+  });
+
+  function openLightbox(imgs,i){
+    activeImgs=imgs;activeIdx=i;
+    updateLb();
+    lb.classList.add('show');
+    document.body.style.overflow='hidden';
+    const multi=imgs.length>1;
+    lbPrev.style.display=multi?'flex':'none';
+    lbNext.style.display=multi?'flex':'none';
+  }
+  function updateLb(){
+    const img=activeImgs[activeIdx];
+    lbImg.src=img.src;
+    lbImg.alt=img.alt;
+  }
+  function closeLightbox(){
+    lb.classList.remove('show');
+    document.body.style.overflow='';
+  }
+  function step(d){
+    activeIdx=(activeIdx+d+activeImgs.length)%activeImgs.length;
+    updateLb();
+  }
+  lbClose.addEventListener('click',closeLightbox);
+  lb.addEventListener('click',e=>{if(e.target===lb)closeLightbox();});
+  lbPrev.addEventListener('click',e=>{e.stopPropagation();step(-1);});
+  lbNext.addEventListener('click',e=>{e.stopPropagation();step(1);});
+  document.addEventListener('keydown',e=>{
+    if(!lb.classList.contains('show'))return;
+    if(e.key==='Escape')closeLightbox();
+    else if(e.key==='ArrowLeft')step(-1);
+    else if(e.key==='ArrowRight')step(1);
+  });
 })();
 /* ===== Schlieren flow-field background ===== */
 (function(){
