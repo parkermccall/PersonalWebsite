@@ -78,6 +78,7 @@ a{color:inherit;text-decoration:none}
 .ss-ph-tag{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--faint);text-transform:uppercase;position:relative;z-index:1}
 .ss-ph-name{font-size:clamp(16px,2.4vw,24px);font-weight:700;letter-spacing:-.01em;text-align:center;padding:0 80px;position:relative;z-index:1;max-width:640px}
 .ss-real-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.ss-real-img.ss-fit{object-fit:contain;background:#0b0b0b}
 .ss-real-img.show{display:block}
 .ss-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(7,7,7,.78);border:1px solid var(--line2);color:var(--ink);width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:var(--mono);font-size:18px;transition:.2s;line-height:1}
 .ss-arrow:hover{background:var(--hot);border-color:var(--hot);color:#070707}
@@ -232,7 +233,13 @@ a{color:inherit;text-decoration:none}
       <img class="ss-real-img show" data-slide="0" src="/assets/TS_img1.png" alt="HTP/Jet-A Bipropellant Test Stand Main View">
       <img class="ss-real-img" data-slide="0" src="/assets/TS_img2.png" alt="Thrust Railing">
       <img class="ss-real-img" data-slide="0" src="/assets/TS_img3.png" alt="Tank Linear Railing">
-      <!-- insert real slide images here for other slides (data-slide="1" | "2" | "3") -->
+      <!-- insert real slide images here for other slides (data-slide="1" | "2") -->
+      <!-- Slide 3 (Project 04 / portfolio 4) Lexadex screenshots — cycles through all five -->
+      <img class="ss-real-img ss-fit" data-slide="3" src="/assets/Lexadex1.png" alt="Lexadex overworld — old man tells the player about the Language Tree">
+      <img class="ss-real-img ss-fit" data-slide="3" src="/assets/Lexadex7.png" alt="Lexadex overworld — player finds an unreadable torn page in the grass">
+      <img class="ss-real-img ss-fit" data-slide="3" src="/assets/Lexadex3.png" alt="Lexadex vocabulary book — 'Ciao' inscribing itself opposite 'Hello'">
+      <img class="ss-real-img ss-fit" data-slide="3" src="/assets/Lexadex5.png" alt="Lexadex vocabulary menu listing learned Italian-English word pairs">
+      <img class="ss-real-img ss-fit" data-slide="3" src="/assets/Lexadex6.png" alt="Lexadex encounter — multiple-choice translation prompt during a wizard battle">
       <div class="ss-overlay" id="ss-overlay">
         <span class="ss-ov-close" id="ss-ov-close">✕</span>
         <div class="ss-ov-proj" id="ss-ov-proj">PROJECT 01</div>
